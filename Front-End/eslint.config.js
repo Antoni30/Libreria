@@ -27,6 +27,7 @@ export default [
       'tailwindcss/enforces-shorthand': 'warn',
       'tailwindcss/no-custom-classname': 'off',
 
+      ...pluginReact.configs.recommended.rules,
       ...pluginReact.configs['jsx-runtime'].rules,
     },
   },
