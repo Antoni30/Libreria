@@ -73,6 +73,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     void navigate('/dashboard', { replace: true })
   }, [user, location, navigate])
 
+  useEffect(() => {
+    if (!message && !error) return
+
+    setTimeout(() => {
+      setMessage('')
+      setError('')
+    }, 2500)
+  }, [message, error])
+
   return (
     <AuthContext.Provider
       value={{

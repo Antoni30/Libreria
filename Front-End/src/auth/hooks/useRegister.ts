@@ -128,9 +128,8 @@ export function useRegister() {
 
   useEffect(() => {
     if (!message) return
-
     setTimeout(() => {
-      void navigate('/login')
+      void navigate('/login', { replace: true })
     }, 2000)
   }, [message, navigate])
 
