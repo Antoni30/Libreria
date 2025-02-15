@@ -12,6 +12,7 @@ import { useAuth } from './useAuth'
 import { UserRegistration } from '../types/user'
 import { UserRole } from '../enums/user.enum'
 import { useNavigate } from 'react-router'
+import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 function initializeRegisterForm(): RegisterForm {
   return {
@@ -129,7 +130,7 @@ export function useRegister() {
   useEffect(() => {
     if (!message) return
     setTimeout(() => {
-      void navigate('/login', { replace: true })
+      void navigate(ROUTES_PATH.login.absolute, { replace: true })
     }, 2000)
   }, [message, navigate])
 

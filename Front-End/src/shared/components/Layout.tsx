@@ -5,7 +5,10 @@ import { ReactElement } from 'react'
 import { UserRole } from '../../auth/enums/user.enum'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { ALLOWED_ROLES_PER_MODULE } from '../constants/routesPermissions'
+import {
+  ALLOWED_ROLES_PER_MODULE,
+  ROUTES_PATH,
+} from '../constants/routesPermissions'
 
 interface LayoutProps {
   userRole: UserRole
@@ -23,7 +26,7 @@ export function Layout({ userRole, children }: LayoutProps) {
 
             {ALLOWED_ROLES_PER_MODULE.books.includes(userRole) && (
               <Link
-                to="/books"
+                to={ROUTES_PATH.books.absolute}
                 className="text-gray-700 hover:text-blue-600 transition"
               >
                 Books
@@ -31,7 +34,7 @@ export function Layout({ userRole, children }: LayoutProps) {
             )}
             {ALLOWED_ROLES_PER_MODULE.users.includes(userRole) && (
               <Link
-                to="/users"
+                to={ROUTES_PATH.users.absolute}
                 className="text-gray-700 hover:text-blue-600 transition"
               >
                 Users
@@ -39,7 +42,7 @@ export function Layout({ userRole, children }: LayoutProps) {
             )}
             {ALLOWED_ROLES_PER_MODULE.publishers.includes(userRole) && (
               <Link
-                to="/publishers"
+                to={ROUTES_PATH.publishers.absolute}
                 className="text-gray-700 hover:text-blue-600 transition"
               >
                 Publishers
@@ -47,7 +50,7 @@ export function Layout({ userRole, children }: LayoutProps) {
             )}
             {ALLOWED_ROLES_PER_MODULE.sales.includes(userRole) && (
               <Link
-                to="/sales"
+                to={ROUTES_PATH.sales.absolute}
                 className="text-gray-700 hover:text-blue-600 transition"
               >
                 Sales
@@ -55,7 +58,7 @@ export function Layout({ userRole, children }: LayoutProps) {
             )}
             {ALLOWED_ROLES_PER_MODULE.store.includes(userRole) && (
               <Link
-                to="/sales"
+                to={ROUTES_PATH.store.absolute}
                 className="text-gray-700 hover:text-blue-600 transition"
               >
                 Store

@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { useRegister } from '../hooks/useRegister'
+import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 export function Register() {
   const {
@@ -122,7 +123,10 @@ export function Register() {
           </button>
           <p className="text-center text-sm text-gray-600 mt-4">
             {`Already have an account? `}
-            <Link to="/login" className="text-blue-600 hover:underline">
+            <Link
+              to={ROUTES_PATH.login.absolute}
+              className="text-blue-600 hover:underline"
+            >
               Sign In
             </Link>
           </p>

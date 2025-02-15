@@ -8,6 +8,7 @@ import {
   removeLocalSession,
   setLocalSession,
 } from '../utils/auth.util'
+import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 interface AuthProviderProps {
   children: ReactElement
@@ -49,7 +50,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(userSignIn)
     setMessage('Login successfully')
     setIsLoading(false)
-    void navigate('/dashboard', { replace: true })
+    void navigate(ROUTES_PATH.dashboard.absolute, { replace: true })
   }
 
   const signUp = async (user: UserRegistration) => {
@@ -69,8 +70,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   useEffect(() => {
-    if (!user || location.pathname !== '/login') return
-    void navigate('/dashboard', { replace: true })
+    if (!user || location.pathname !== ROUTES_PATH.login.absolute) return
+    void navigate(ROUTES_PATH.dashboard.absolute, { replace: true })
   }, [user, location, navigate])
 
   useEffect(() => {
