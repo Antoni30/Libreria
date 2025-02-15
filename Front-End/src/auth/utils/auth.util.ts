@@ -1,4 +1,3 @@
-import { UserRole } from '../enums/user.enum'
 import { FormField, LoginForm, RegisterForm } from '../types/auth'
 import { User } from '../types/user'
 import {
@@ -8,12 +7,6 @@ import {
   isValidPassword,
   isValidPhoneNumber,
 } from '../utils/user.util'
-
-const homePathByUserRole: Record<UserRole, string> = {
-  [UserRole.ADMIN]: '/admin',
-  [UserRole.CLIENT]: '/client',
-  [UserRole.LIBRARIAN]: '/librarian',
-}
 
 const USER_SESSION_KEY = 'user'
 
@@ -95,10 +88,6 @@ export function validateRegisterForm(form: RegisterForm) {
   formValidated.isValid = isValidForm
 
   return formValidated
-}
-
-export function getHomePathFromUserRole(role: UserRole) {
-  return homePathByUserRole[role]
 }
 
 export function setLocalSession(user: User) {

@@ -4,7 +4,6 @@ import { AuthContext } from '../context/AuthContext'
 import { signInService, signUpService } from '../services/auth.service'
 import { useLocation, useNavigate } from 'react-router'
 import {
-  getHomePathFromUserRole,
   getLocalSession,
   removeLocalSession,
   setLocalSession,
@@ -25,7 +24,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = () => {
     removeLocalSession()
     setUser(undefined)
-    void navigate('/')
+    void navigate('/', { replace: true })
   }
 
   const signIn = async (email: string, password: string) => {
@@ -50,7 +49,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(userSignIn)
     setMessage('Login successfully')
     setIsLoading(false)
-    void navigate(getHomePathFromUserRole(userSignIn.role), { replace: true })
+    void navigate('/dashboard', { replace: true })
   }
 
   const signUp = async (user: UserRegistration) => {
@@ -71,7 +70,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     if (!user || location.pathname !== '/login') return
-    void navigate(getHomePathFromUserRole(user.role), { replace: true })
+    void navigate('/dashboard', { replace: true })
   }, [user, location, navigate])
 
   return (

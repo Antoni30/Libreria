@@ -5,7 +5,7 @@ import { ReactElement } from 'react'
 import { UserRole } from '../../auth/enums/user.enum'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { ALLOWED_ROLES_PER_MODULE } from '../constants/rolesPermissions'
+import { ALLOWED_ROLES_PER_MODULE } from '../constants/routesPermissions'
 
 interface LayoutProps {
   userRole: UserRole
