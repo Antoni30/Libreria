@@ -53,6 +53,14 @@ export function Layout({ userRole, children }: LayoutProps) {
                 Sales
               </Link>
             )}
+            {ALLOWED_ROLES_PER_MODULE.store.includes(userRole) && (
+              <Link
+                to="/sales"
+                className="text-gray-700 hover:text-blue-600 transition"
+              >
+                Store
+              </Link>
+            )}
           </div>
           <div className="flex items-center space-x-6">
             <button

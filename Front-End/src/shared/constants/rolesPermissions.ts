@@ -5,4 +5,5 @@ export const ALLOWED_ROLES_PER_MODULE = {
   sales: [UserRole.ADMIN],
   books: [UserRole.LIBRARIAN],
   publishers: [UserRole.LIBRARIAN],
+  store: [UserRole.CLIENT],
 }

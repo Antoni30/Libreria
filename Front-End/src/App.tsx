@@ -31,6 +31,12 @@ function App() {
           <Route index element={<Welcome />} />
         </Route>
         <Route
+          path="client"
+          element={<ProtectedRoute allowedRoles={[UserRole.CLIENT]} />}
+        >
+          <Route index element={<Welcome />} />
+        </Route>
+        <Route
           path="store"
           element={<ProtectedRoute allowedRoles={[UserRole.CLIENT]} />}
         >

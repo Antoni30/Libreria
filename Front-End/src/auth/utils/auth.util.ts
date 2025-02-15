@@ -11,7 +11,7 @@ import {
 
 const homePathByUserRole: Record<UserRole, string> = {
   [UserRole.ADMIN]: '/admin',
-  [UserRole.CLIENT]: '/store',
+  [UserRole.CLIENT]: '/client',
   [UserRole.LIBRARIAN]: '/librarian',
 }
 
