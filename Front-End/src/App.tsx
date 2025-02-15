@@ -10,7 +10,7 @@ import { Store } from './store/screens/Store'
 import { Welcome } from './shared/components/Welcome'
 import {
   ALLOWED_ROLES_PER_MODULE,
-  routesPath,
+  ROUTES_PATH,
 } from './shared/constants/routesPermissions'
 
 function App() {
@@ -19,16 +19,16 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Navigate to={routesPath.login.absolute} replace />}
+          element={<Navigate to={ROUTES_PATH.login.absolute} replace />}
         />
-        <Route path={routesPath.login.relative} element={<Login />} />
-        <Route path={routesPath.register.relative} element={<Register />} />
+        <Route path={ROUTES_PATH.login.relative} element={<Login />} />
+        <Route path={ROUTES_PATH.register.relative} element={<Register />} />
         <Route
-          path={routesPath.unauthorized.relative}
+          path={ROUTES_PATH.unauthorized.relative}
           element={<Unauthorized />}
         />
         <Route
-          path={routesPath.dashboard.relative}
+          path={ROUTES_PATH.dashboard.relative}
           element={
             <ProtectedRoute allowedRoles={ALLOWED_ROLES_PER_MODULE.dashboard} />
           }
@@ -36,7 +36,7 @@ function App() {
           <Route index element={<Welcome />} />
         </Route>
         <Route
-          path={routesPath.store.relative}
+          path={ROUTES_PATH.store.relative}
           element={
             <ProtectedRoute allowedRoles={ALLOWED_ROLES_PER_MODULE.store} />
           }

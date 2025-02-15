@@ -1,6 +1,6 @@
 import { UserRole } from '../../auth/enums/user.enum'
 
-export const routesPath = {
+export const ROUTES_PATH = {
   login: {
     relative: 'login',
     absolute: '/login',
@@ -40,7 +40,7 @@ export const routesPath = {
 }
 
 export const ALLOWED_ROLES_PER_MODULE: Record<
-  keyof Omit<typeof routesPath, 'login' | 'register' | 'unauthorized'>,
+  keyof Omit<typeof ROUTES_PATH, 'login' | 'register' | 'unauthorized'>,
   UserRole[]
 > = {
   dashboard: [UserRole.ADMIN, UserRole.CLIENT, UserRole.LIBRARIAN],
