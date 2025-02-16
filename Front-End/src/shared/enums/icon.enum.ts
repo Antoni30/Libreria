@@ -4,4 +4,5 @@ export enum Icon {
   CREATE,
   EDIT,
   DELETE,
+  LOADING,
 }
