@@ -27,7 +27,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore'
       resolve({
         email: email,
         fullname: 'John Doe',
-        id: 1,
+        id: '1',
         phoneNumber: '0985635691',
         role: roleFromEmail[email],
       })
@@ -46,7 +46,7 @@ async function signUpSimulated(
 
       resolve({
         ...user,
-        id: 2,
+        id: '2',
       })
     }, 2000)
   })
