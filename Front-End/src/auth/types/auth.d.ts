@@ -1,4 +1,5 @@
 import { LoginActionType, RegisterActionType } from '../enums/auth.enum'
+import { User } from '../../users/types/user'
 
 export interface FormField {
   text: string
@@ -74,3 +75,6 @@ export type RegisterAction =
   | {
       type: RegisterActionType.RESET
     }
+export type UserSignUp = Omit<User, 'id'> & {
+  password: string
+}

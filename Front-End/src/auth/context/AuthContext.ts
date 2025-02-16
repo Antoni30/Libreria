@@ -1,5 +1,6 @@
 import { createContext } from 'react'
-import { User, UserRegistration } from '../types/user'
+import { User } from '../../users/types/user'
+import { UserSignUp } from '../types/auth'
 
 interface AuthContextValue {
   user?: User
@@ -8,7 +9,7 @@ interface AuthContextValue {
   error: string
   updateUser: (user: User) => void
   signIn: (email: string, password: string) => Promise<void>
-  signUp: (user: UserRegistration) => Promise<void>
+  signUp: (user: UserSignUp) => Promise<void>
   signOut: () => void
 }
 

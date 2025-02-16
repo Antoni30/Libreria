@@ -1,4 +1,4 @@
-import { UserRole } from '../../auth/enums/user.enum'
+import { UserRole } from '../../users/enums/user.enum'
 
 export const ROUTES_PATH = {
   login: {

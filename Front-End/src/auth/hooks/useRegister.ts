@@ -9,8 +9,8 @@ import {
   validateRegisterForm,
 } from '../utils/auth.util'
 import { useAuth } from './useAuth'
-import { UserRegistration } from '../types/user'
-import { UserRole } from '../enums/user.enum'
+import { UserSignUp } from '../types/auth'
+import { UserRole } from '../../users/enums/user.enum'
 import { useNavigate } from 'react-router'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
@@ -116,7 +116,7 @@ export function useRegister() {
   useEffect(() => {
     if (!form.isValid || isLoading) return
 
-    const userToRegister: UserRegistration = {
+    const userToRegister: UserSignUp = {
       email: form.fields.email.text,
       fullname: form.fields.fullname.text,
       password: form.fields.password.text,

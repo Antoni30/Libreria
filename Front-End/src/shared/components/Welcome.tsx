@@ -1,5 +1,5 @@
 import { useAuth } from '../../auth/hooks/useAuth'
-import { getTextFromUserRole } from '../../auth/utils/user.util'
+import { getTextFromUserRole } from '../../users/utils/user.util'
 
 export function Welcome() {
   const { user } = useAuth()

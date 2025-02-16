@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { User, UserRegistration } from '../types/user'
+import { User } from '../../users/types/user'
+import { UserSignUp } from '../types/auth'
 import { AuthContext } from '../context/AuthContext'
 import { signInService, signUpService } from '../services/auth.service'
 import { useLocation, useNavigate } from 'react-router'
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     void navigate(ROUTES_PATH.dashboard.absolute, { replace: true })
   }
 
-  const signUp = async (user: UserRegistration) => {
+  const signUp = async (user: UserSignUp) => {
     setIsLoading(true)
     setError('')
     setMessage('')

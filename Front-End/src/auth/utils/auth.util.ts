@@ -1,5 +1,5 @@
 import { FormField, LoginForm, RegisterForm } from '../types/auth'
-import { User } from '../types/user'
+import { User } from '../../users/types/user'
 import {
   isUser,
   isValidEmail,

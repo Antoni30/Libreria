@@ -7,7 +7,3 @@ export interface User {
   email: string
   phoneNumber: string
 }
-
-export type UserRegistration = Omit<User, 'id'> & {
-  password: string
-}

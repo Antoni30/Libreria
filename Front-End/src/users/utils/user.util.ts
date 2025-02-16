@@ -1,5 +1,5 @@
-import { UserRole } from '../enums/user.enum'
-import { User } from '../types/user'
+import { UserRole } from '../../users/enums/user.enum'
+import { User } from '../../users/types/user'
 
 export function isValidFullname(fullname: string) {
   return /^[A-Za-z]{3,}\s[A-Za-z]{3,}$/.test(fullname)

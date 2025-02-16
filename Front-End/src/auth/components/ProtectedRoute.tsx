@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from 'react-router'
-import { UserRole } from '../enums/user.enum'
+import { UserRole } from '../../users/enums/user.enum'
 import { useAuth } from '../hooks/useAuth'
 import { Layout } from '../../shared/components/Layout'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'

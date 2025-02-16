@@ -2,7 +2,7 @@ import { IconFactory } from './IconFactory'
 import { Icon } from '../enums/icon.enum'
 import Logo from '../../assets/shared/logo.png'
 import { ReactElement } from 'react'
-import { UserRole } from '../../auth/enums/user.enum'
+import { UserRole } from '../../users/enums/user.enum'
 import { Link } from 'react-router'
 import { useAuth } from '../../auth/hooks/useAuth'
 import {
