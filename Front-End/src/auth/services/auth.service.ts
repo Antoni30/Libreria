@@ -109,7 +109,7 @@ export async function signUpService(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_user_role: UserRole.CLIENT,
+        id_user_role: user.role,
         user_fullname: user.fullname,
         user_email: user.email,
         user_password: user.password,
