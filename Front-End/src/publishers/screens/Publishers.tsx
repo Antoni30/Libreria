@@ -5,7 +5,8 @@ import { usePublishers } from '../hooks/usePublishers'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 export function Publishers() {
-  const { publishers, isLoading, deletePublisher } = usePublishers()
+  const { publishers, isLoading, publisherIdDeleting, deletePublisher } =
+    usePublishers()
 
   return (
     <main>
@@ -34,7 +35,7 @@ export function Publishers() {
             {isLoading ? (
               <tr>
                 <td colSpan={5} className="py-4 text-center text-gray-500">
-                  Loading publshers...
+                  <IconFactory icon={Icon.LOADING} />
                 </td>
               </tr>
             ) : !publishers.length ? (
@@ -50,19 +51,28 @@ export function Publishers() {
                   <td className="py-2 px-4 border-b">{publisher.address}</td>
                   <td className="py-2 px-4 border-b">{publisher.phone}</td>
                   <td className="py-2 px-4 border-b">{publisher.email}</td>
-                  <td className="py-2 px-4 border-b flex space-x-4">
-                    <Link
-                      to={ROUTES_PATH.publishers.edit.absolute(publisher.id)}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      <IconFactory icon={Icon.EDIT} />
-                    </Link>
-                    <button
-                      className="text-red-500 hover:text-red-700 hover:cursor-pointer"
-                      onClick={() => deletePublisher(publisher.id)}
-                    >
-                      <IconFactory icon={Icon.DELETE} />
-                    </button>
+                  <td className="py-2 px-4 border-b flex space-x-4 justify-center">
+                    {publisherIdDeleting &&
+                    publisherIdDeleting === publisher.id ? (
+                      <IconFactory icon={Icon.LOADING} />
+                    ) : (
+                      <>
+                        <Link
+                          to={ROUTES_PATH.publishers.edit.absolute(
+                            publisher.id
+                          )}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          <IconFactory icon={Icon.EDIT} />
+                        </Link>
+                        <button
+                          className="text-red-500 hover:text-red-700 hover:cursor-pointer"
+                          onClick={() => void deletePublisher(publisher.id)}
+                        >
+                          <IconFactory icon={Icon.DELETE} />
+                        </button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))

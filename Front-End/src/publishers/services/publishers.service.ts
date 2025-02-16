@@ -9,7 +9,22 @@ async function getPublishersSimulated() {
   })
 }
 
+async function deletePublishersSimulated(id: number) {
+  const publisherDeleted = PublishersMock.find((element) => element.id === id)
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(publisherDeleted)
+    }, 2000)
+  })
+}
+
 export async function getPublishersService(): Promise<Publisher[]> {
   const publishers = await getPublishersSimulated()
   return publishers
+}
+
+export async function deletePublisherService(id: number): Promise<boolean> {
+  const publisherDeleted = await deletePublishersSimulated(id)
+  return publisherDeleted !== undefined
 }
