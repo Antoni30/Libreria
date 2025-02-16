@@ -3,10 +3,10 @@ import { pool } from "../../db.js";
 export async function getPublishers(_, response) {
   try {
     const result = await pool.query("SELECT * FROM get_all_publishers();");
-    response.json(result.rows);
+    response.json({ data: result.rows });
   } catch (error) {
     console.error(error);
-    response.status(500).send("Server error");
+    response.status(500).send({ error: "Server error" });
   }
 }
 
@@ -17,13 +17,13 @@ export async function getPublisherById(request, response) {
       id,
     ]);
     if (result.rows.length > 0) {
-      response.json(result.rows[0]);
+      response.json({ data: result.rows[0] });
     } else {
-      response.status(404).send({ message: "Publisher not found" });
+      response.status(404).send({ error: "Publisher not found" });
     }
   } catch (error) {
     console.error(error);
-    response.status(500).send("Server error");
+    response.status(500).send({ error: "Server error" });
   }
 }
 
@@ -32,7 +32,7 @@ export async function postPublishers(request, response) {
 
   if (!name || !address || !phone || !email) {
     return response.status(400).json({
-      message:
+      error:
         "Request body incomplete. Fields required: { name, address, phone, email }",
     });
   }
@@ -47,7 +47,7 @@ export async function postPublishers(request, response) {
     response.status(201).send({ message: "Publisher created successfully" });
   } catch (error) {
     console.error(error);
-    response.status(500).send("Server error");
+    response.status(500).send({ error: "Server error" });
   }
 }
 
@@ -57,7 +57,7 @@ export async function putPublishers(request, response) {
 
   if (!name || !address || !phone || !email) {
     return response.status(400).json({
-      message:
+      error:
         "Request body incomplete. Fields required: { name, address, phone, email }",
     });
   }
@@ -70,10 +70,10 @@ export async function putPublishers(request, response) {
       phone,
       email,
     ]);
-    response.send("Publisher updated successfully");
+    response.send({ message: "Publisher updated successfully" });
   } catch (error) {
     console.error(error);
-    response.status(500).send("Server error");
+    response.status(500).send({ error: "Server error" });
   }
 }
 
@@ -89,13 +89,13 @@ export async function deletePublishers(request, response) {
     if (hasBooks) {
       response
         .status(400)
-        .send("Cannot delete publisher with associated books");
+        .send({ error: "Cannot delete publisher with associated books" });
     } else {
       await pool.query("SELECT delete_publisher($1);", [id]);
-      response.send("Publisher deleted successfully");
+      response.send({ message: "Publisher deleted successfully" });
     }
   } catch (error) {
     console.error(error);
-    response.status(500).send("Server error");
+    response.status(500).send({ error: "Server error" });
   }
 }
