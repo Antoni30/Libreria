@@ -6,7 +6,7 @@ import {
   isValidFullname,
   isValidPassword,
   isValidPhoneNumber,
-} from '../utils/user.util'
+} from '../../users/utils/user.util'
 
 const USER_SESSION_KEY = 'user'
 
