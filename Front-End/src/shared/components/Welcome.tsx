@@ -10,6 +10,7 @@ export function Welcome() {
           {user && getTextFromUserRole(user?.role)} Dashboard
         </h1>
         <p className="text-lg text-gray-600 mt-4">Welcome, {user?.fullname}!</p>
+        <p className="text-lg text-gray-600 mt-4">Welcome, {user?.id}</p>
       </div>
     </div>
   )
