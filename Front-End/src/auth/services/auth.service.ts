@@ -1,4 +1,4 @@
-import { UserRole } from '../../users/enums/user.enum'
+// import { UserRole } from '../../users/enums/user.enum'
 import { User } from '../../users/types/user'
 import { UserSignUp } from '../types/auth'
 import { auth, db } from './firebase.service'
@@ -8,7 +8,7 @@ import {
 } from 'firebase/auth'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 
-async function signInSimulated(
+/* async function signInSimulated(
   email: string,
   password: string
 ): Promise<User | undefined> {
@@ -33,7 +33,7 @@ async function signInSimulated(
       })
     }, 2000)
   })
-}
+} */
 
 /* async function signUpSimulated(
   user: UserSignUp
@@ -56,9 +56,6 @@ export async function signInService(
   email: string,
   password: string
 ): Promise<User | undefined> {
-  const userSimulated = await signInSimulated(email, password)
-  if (userSimulated) return userSimulated
-
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
