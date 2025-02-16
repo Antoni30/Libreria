@@ -32,6 +32,16 @@ export const ROUTES_PATH = {
   publishers: {
     relative: 'publishers',
     absolute: '/publishers',
+    add: {
+      relative: 'add',
+      absolute: '/publishers/add',
+    },
+    edit: {
+      relative: 'edit/:publisherId',
+      absolute: (publisherId: number) => {
+        return `/publishers/edit/${publisherId}`
+      },
+    },
   },
   store: {
     relative: 'store',

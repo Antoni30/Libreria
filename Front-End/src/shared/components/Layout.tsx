@@ -23,7 +23,9 @@ export function Layout({ userRole, children }: LayoutProps) {
       <header>
         <nav className="bg-white shadow-md p-4 flex justify-between items-center">
           <div className="flex items-center space-x-6">
-            <img src={Logo} alt="Logo" className="h-10" />
+            <Link to={'/'}>
+              <img src={Logo} alt="Logo" className="h-10" />
+            </Link>
 
             {ALLOWED_ROLES_PER_MODULE.books.includes(userRole) && (
               <Link
@@ -68,7 +70,7 @@ export function Layout({ userRole, children }: LayoutProps) {
           </div>
           <div className="flex items-center space-x-6">
             <button
-              className="text-gray-700 hover:text-red-600 transition"
+              className="text-gray-700 hover:text-red-600 hover:cursor-pointer transition"
               onClick={signOut}
             >
               <IconFactory icon={Icon.SIGN_OUT} />
