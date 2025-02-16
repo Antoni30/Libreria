@@ -1,4 +1,3 @@
-// import { UserRole } from '../enums/user.enum'
 import { UserRole } from '../enums/user.enum'
 import { User, UserRegistration } from '../types/user'
 import { auth, db } from './firebase.service'
@@ -33,9 +32,9 @@ import { doc, setDoc, getDoc } from 'firebase/firestore'
       })
     }, 2000)
   })
-}
+} */
 
-async function signUpSimulated(
+/* async function signUpSimulated(
   user: UserRegistration
 ): Promise<User | undefined> {
   return new Promise((resolve) => {
@@ -52,20 +51,25 @@ async function signUpSimulated(
   })
 } */
 
-export async function signInService(email: string, password: string) {
+export async function signInService(
+  email: string,
+  password: string
+): Promise<User | undefined> {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password
     )
+
     const firebaseUser = userCredential.user
 
-    // Obtener datos adicionales del usuario desde Firestore
     const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid))
+
     if (!userDoc.exists()) {
       throw new Error('El usuario no existe en Firestore')
     }
+
     const userData = userDoc.data() as User
     return userData
   } catch (error) {
@@ -74,7 +78,9 @@ export async function signInService(email: string, password: string) {
   }
 }
 
-export async function signUpService(user: UserRegistration) {
+export async function signUpService(
+  user: UserRegistration
+): Promise<User | undefined> {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -93,17 +99,16 @@ export async function signUpService(user: UserRegistration) {
 
     await setDoc(doc(db, 'users', firebaseUser.uid), userData)
 
-    // Llamada a la API externa
     const apiResponse = await fetch('http://localhost:2027/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_user_role: UserRole.CLIENT, // Ajustar según el rol del usuario
+        id_user_role: UserRole.CLIENT,
         user_fullname: user.fullname,
         user_email: user.email,
-        user_password: user.password, // Se recomienda hashear esto en el backend
+        user_password: user.password,
         user_phone: user.phoneNumber,
         id_firebase: firebaseUser.uid,
       }),
