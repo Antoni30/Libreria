@@ -35,7 +35,6 @@ export const postRoles = async (req,res) =>{
         })
     }
 }
-
 export const deleteRoles = async(req,res)=>{
     try { 
         const{id} = req.params;

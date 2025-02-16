@@ -1,5 +1,5 @@
 class User {
-    constructor(id_user_role,user_fullname, user_email, user_password,user_phone,user_registration_date,id_user=0){
+    constructor(id_user_role,user_fullname, user_email, user_password,user_phone,user_registration_date,id_firebase=0,id_user=0){
         this.id_user=id_user;
         this.id_user_role=id_user_role;
         this.user_fullname=user_fullname;
@@ -7,6 +7,7 @@ class User {
         this.user_password=user_password;
         this.user_phone= user_phone;
         this.user_registration_date=user_registration_date;
+        this.id_firebase=id_firebase
     }
     getUserRole(){
         return this.id_user_role;
