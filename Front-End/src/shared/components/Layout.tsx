@@ -17,6 +17,7 @@ interface LayoutProps {
 
 export function Layout({ userRole, children }: LayoutProps) {
   const { signOut } = useAuth()
+
   return (
     <div>
       <header>

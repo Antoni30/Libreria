@@ -12,6 +12,10 @@ import {
   ALLOWED_ROLES_PER_MODULE,
   ROUTES_PATH,
 } from './shared/constants/routesPermissions'
+import { Books } from './books/screens/Books'
+import { Publishers } from './publishers/screens/Publishers'
+import { Sales } from './sales/screens/Sales'
+import { Users } from './users/screens/Users'
 
 function App() {
   return (
@@ -21,12 +25,16 @@ function App() {
           path="/"
           element={<Navigate to={ROUTES_PATH.login.absolute} replace />}
         />
+
         <Route path={ROUTES_PATH.login.relative} element={<Login />} />
+
         <Route path={ROUTES_PATH.register.relative} element={<Register />} />
+
         <Route
           path={ROUTES_PATH.unauthorized.relative}
           element={<Unauthorized />}
         />
+
         <Route
           path={ROUTES_PATH.dashboard.relative}
           element={
@@ -35,6 +43,7 @@ function App() {
         >
           <Route index element={<Welcome />} />
         </Route>
+
         <Route
           path={ROUTES_PATH.store.relative}
           element={
@@ -43,6 +52,45 @@ function App() {
         >
           <Route index element={<Store />} />
         </Route>
+
+        <Route
+          path={ROUTES_PATH.books.relative}
+          element={
+            <ProtectedRoute allowedRoles={ALLOWED_ROLES_PER_MODULE.books} />
+          }
+        >
+          <Route index element={<Books />} />
+        </Route>
+
+        <Route
+          path={ROUTES_PATH.publishers.relative}
+          element={
+            <ProtectedRoute
+              allowedRoles={ALLOWED_ROLES_PER_MODULE.publishers}
+            />
+          }
+        >
+          <Route index element={<Publishers />} />
+        </Route>
+
+        <Route
+          path={ROUTES_PATH.sales.relative}
+          element={
+            <ProtectedRoute allowedRoles={ALLOWED_ROLES_PER_MODULE.sales} />
+          }
+        >
+          <Route index element={<Sales />} />
+        </Route>
+
+        <Route
+          path={ROUTES_PATH.users.relative}
+          element={
+            <ProtectedRoute allowedRoles={ALLOWED_ROLES_PER_MODULE.users} />
+          }
+        >
+          <Route index element={<Users />} />
+        </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
