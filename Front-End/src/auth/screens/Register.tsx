@@ -1,6 +1,8 @@
 import { Link } from 'react-router'
 import { useRegister } from '../hooks/useRegister'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
+import { IconFactory } from '../../shared/components/IconFactory'
+import { Icon } from '../../shared/enums/icon.enum'
 
 export function Register() {
   const {
@@ -119,7 +121,7 @@ export function Register() {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition"
           >
-            {isLoading ? 'Loading...' : 'Register'}
+            {isLoading ? <IconFactory icon={Icon.LOADING} /> : 'Register'}
           </button>
           <p className="text-center text-sm text-gray-600 mt-4">
             {`Already have an account? `}

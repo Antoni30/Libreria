@@ -1,6 +1,8 @@
 import { Link } from 'react-router'
 import { useLogin } from '../hooks/useLogin'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
+import { IconFactory } from '../../shared/components/IconFactory'
+import { Icon } from '../../shared/enums/icon.enum'
 
 export function Login() {
   const { form, error, isLoading, setEmail, setPassword, submit } = useLogin()
@@ -64,7 +66,7 @@ export function Login() {
             onClick={submit}
             disabled={isLoading}
           >
-            {isLoading ? 'Loading...' : 'Sign In'}
+            {isLoading ? <IconFactory icon={Icon.LOADING} /> : 'Sign In'}
           </button>
           <p className="text-center text-sm text-gray-600 mt-4">
             {`Don't have an account? `}
