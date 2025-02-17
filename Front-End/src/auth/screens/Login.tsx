@@ -1,6 +1,8 @@
 import { Link } from 'react-router'
 import { useLogin } from '../hooks/useLogin'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
+import { IconFactory } from '../../shared/components/IconFactory'
+import { Icon } from '../../shared/enums/icon.enum'
 
 export function Login() {
   const { form, error, isLoading, setEmail, setPassword, submit } = useLogin()
@@ -26,7 +28,7 @@ export function Login() {
             </label>
             <input
               type="email"
-              value={form.fields.email.text}
+              value={form.fields.email.value}
               onChange={(e) => setEmail(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -45,7 +47,7 @@ export function Login() {
             </label>
             <input
               type="password"
-              value={form.fields.password.text}
+              value={form.fields.password.value}
               onChange={(e) => setPassword(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -64,7 +66,7 @@ export function Login() {
             onClick={submit}
             disabled={isLoading}
           >
-            {isLoading ? 'Loading...' : 'Sign In'}
+            {isLoading ? <IconFactory icon={Icon.LOADING} /> : 'Sign In'}
           </button>
           <p className="text-center text-sm text-gray-600 mt-4">
             {`Don't have an account? `}

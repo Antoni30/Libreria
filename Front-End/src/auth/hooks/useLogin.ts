@@ -12,11 +12,11 @@ function initializeLoginForm(): LoginForm {
   return {
     fields: {
       email: {
-        text: '',
+        value: '',
         error: '',
       },
       password: {
-        text: '',
+        value: '',
         error: '',
       },
     },
@@ -77,8 +77,8 @@ export function useLogin() {
 
   useEffect(() => {
     if (!form.isValid || isLoading) return
-    const email = form.fields.email.text
-    const password = form.fields.password.text
+    const email = form.fields.email.value
+    const password = form.fields.password.value
     void signIn(email, password).then(() => reset())
   }, [form, isLoading, signIn])
 

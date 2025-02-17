@@ -1,4 +1,8 @@
 export enum Icon {
   SHOPPING_CART,
   SIGN_OUT,
+  CREATE,
+  EDIT,
+  DELETE,
+  LOADING,
 }

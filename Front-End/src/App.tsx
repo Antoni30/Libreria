@@ -16,6 +16,8 @@ import { Books } from './books/screens/Books'
 import { Publishers } from './publishers/screens/Publishers'
 import { Sales } from './sales/screens/Sales'
 import { Users } from './users/screens/Users'
+import { AddPublisher } from './publishers/screens/AddPublisher'
+import { EditPublisher } from './publishers/screens/EditPublisher'
 
 function App() {
   return (
@@ -71,6 +73,14 @@ function App() {
           }
         >
           <Route index element={<Publishers />} />
+          <Route
+            path={ROUTES_PATH.publishers.add.relative}
+            element={<AddPublisher />}
+          />
+          <Route
+            path={ROUTES_PATH.publishers.edit.relative}
+            element={<EditPublisher />}
+          />
         </Route>
 
         <Route

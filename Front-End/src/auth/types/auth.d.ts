@@ -1,17 +1,8 @@
 import { LoginActionType, RegisterActionType } from '../enums/auth.enum'
+import { User } from '../../users/types/user'
+import { FormState } from '../../shared/types/form'
 
-export interface FormField {
-  text: string
-  error: string
-}
-
-export interface LoginForm {
-  fields: {
-    email: FormField
-    password: FormField
-  }
-  isValid: boolean
-}
+export type LoginForm = FormState<Pick<User, 'email' | 'password'>>
 
 export type LoginAction =
   | {
@@ -33,15 +24,7 @@ export type LoginAction =
       type: LoginActionType.RESET
     }
 
-export interface RegisterForm {
-  fields: {
-    fullname: FormField
-    email: FormField
-    phoneNumber: FormField
-    password: FormField
-  }
-  isValid: boolean
-}
+export type RegisterForm = FormState<Omit<User, 'id' | 'role'>>
 
 export type RegisterAction =
   | {
@@ -74,3 +57,6 @@ export type RegisterAction =
   | {
       type: RegisterActionType.RESET
     }
+
+export type UserSignIn = Omit<User, 'password'>
+export type UserSignUp = Omit<User, 'id' | 'role'>

@@ -1,6 +1,8 @@
 import { Link } from 'react-router'
 import { useRegister } from '../hooks/useRegister'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
+import { IconFactory } from '../../shared/components/IconFactory'
+import { Icon } from '../../shared/enums/icon.enum'
 
 export function Register() {
   const {
@@ -41,7 +43,7 @@ export function Register() {
             </label>
             <input
               type="text"
-              value={form.fields.fullname.text}
+              value={form.fields.fullname.value}
               onChange={(e) => setFullname(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -61,7 +63,7 @@ export function Register() {
             </label>
             <input
               type="email"
-              value={form.fields.email.text}
+              value={form.fields.email.value}
               onChange={(e) => setEmail(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -81,7 +83,7 @@ export function Register() {
             </label>
             <input
               type="text"
-              value={form.fields.phoneNumber.text}
+              value={form.fields.phoneNumber.value}
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -101,7 +103,7 @@ export function Register() {
             </label>
             <input
               type="password"
-              value={form.fields.password.text}
+              value={form.fields.password.value}
               onChange={(e) => setPassword(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -119,7 +121,7 @@ export function Register() {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition"
           >
-            {isLoading ? 'Loading...' : 'Register'}
+            {isLoading ? <IconFactory icon={Icon.LOADING} /> : 'Register'}
           </button>
           <p className="text-center text-sm text-gray-600 mt-4">
             {`Already have an account? `}

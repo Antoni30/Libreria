@@ -9,18 +9,17 @@ import {
   validateRegisterForm,
 } from '../utils/auth.util'
 import { useAuth } from './useAuth'
-import { UserRegistration } from '../types/user'
-import { UserRole } from '../enums/user.enum'
+import { UserSignUp } from '../types/auth'
 import { useNavigate } from 'react-router'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 function initializeRegisterForm(): RegisterForm {
   return {
     fields: {
-      fullname: { text: '', error: '' },
-      email: { text: '', error: '' },
-      phoneNumber: { text: '', error: '' },
-      password: { text: '', error: '' },
+      fullname: { value: '', error: '' },
+      email: { value: '', error: '' },
+      phoneNumber: { value: '', error: '' },
+      password: { value: '', error: '' },
     },
     isValid: false,
   }
@@ -116,12 +115,11 @@ export function useRegister() {
   useEffect(() => {
     if (!form.isValid || isLoading) return
 
-    const userToRegister: UserRegistration = {
-      email: form.fields.email.text,
-      fullname: form.fields.fullname.text,
-      password: form.fields.password.text,
-      phoneNumber: form.fields.phoneNumber.text,
-      role: UserRole.CLIENT,
+    const userToRegister: UserSignUp = {
+      email: form.fields.email.value,
+      fullname: form.fields.fullname.value,
+      password: form.fields.password.value,
+      phoneNumber: form.fields.phoneNumber.value,
     }
 
     void signUp(userToRegister).then(() => reset())
