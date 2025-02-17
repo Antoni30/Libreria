@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyA44ml3o7Dpb-V_9a8e7OP99GIr_f_rcMQ',
-  authDomain: 'libreria-8dbba.firebaseapp.com',
-  projectId: 'libreria-8dbba',
-  storageBucket: 'libreria-8dbba.firebasestorage.app',
-  messagingSenderId: '233740073387',
-  appId: '1:233740073387:web:195cc1a4dbad7b1dccbaee',
-}
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
