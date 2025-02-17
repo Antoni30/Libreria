@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react'
-import { User } from '../../users/types/user'
-import { UserSignUp } from '../types/auth'
+import { UserSignIn, UserSignUp } from '../types/auth'
 import { AuthContext } from '../context/AuthContext'
 import { signInService, signUpService } from '../services/auth.service'
 import { useLocation, useNavigate } from 'react-router'
@@ -16,7 +15,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | undefined>(getLocalSession)
+  const [user, setUser] = useState<UserSignIn | undefined>(getLocalSession)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
@@ -62,11 +61,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const successfulSignUp = await signUpService(user)
     if (!successfulSignUp) {
       setError('User has already register')
-      setIsLoading(false)
-      return
+    } else {
+      setMessage('Register successfully')
     }
 
-    setMessage('Register successfully')
     setIsLoading(false)
   }
 

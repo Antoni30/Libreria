@@ -28,7 +28,7 @@ export function Login() {
             </label>
             <input
               type="email"
-              value={form.fields.email.text}
+              value={form.fields.email.value}
               onChange={(e) => setEmail(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${
@@ -47,7 +47,7 @@ export function Login() {
             </label>
             <input
               type="password"
-              value={form.fields.password.text}
+              value={form.fields.password.value}
               onChange={(e) => setPassword(e.target.value)}
               required
               className={`w-full mt-1 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none ${

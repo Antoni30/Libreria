@@ -10,17 +10,16 @@ import {
 } from '../utils/auth.util'
 import { useAuth } from './useAuth'
 import { UserSignUp } from '../types/auth'
-import { UserRole } from '../../users/enums/user.enum'
 import { useNavigate } from 'react-router'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 function initializeRegisterForm(): RegisterForm {
   return {
     fields: {
-      fullname: { text: '', error: '' },
-      email: { text: '', error: '' },
-      phoneNumber: { text: '', error: '' },
-      password: { text: '', error: '' },
+      fullname: { value: '', error: '' },
+      email: { value: '', error: '' },
+      phoneNumber: { value: '', error: '' },
+      password: { value: '', error: '' },
     },
     isValid: false,
   }
@@ -117,11 +116,10 @@ export function useRegister() {
     if (!form.isValid || isLoading) return
 
     const userToRegister: UserSignUp = {
-      email: form.fields.email.text,
-      fullname: form.fields.fullname.text,
-      password: form.fields.password.text,
-      phoneNumber: form.fields.phoneNumber.text,
-      role: UserRole.CLIENT,
+      email: form.fields.email.value,
+      fullname: form.fields.fullname.value,
+      password: form.fields.password.value,
+      phoneNumber: form.fields.phoneNumber.value,
     }
 
     void signUp(userToRegister).then(() => reset())

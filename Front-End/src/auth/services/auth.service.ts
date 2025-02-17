@@ -1,6 +1,5 @@
-// import { UserRole } from '../../users/enums/user.enum'
-import { User } from '../../users/types/user'
-import { UserSignUp } from '../types/auth'
+import { UserRole } from '../../users/enums/user.enum'
+import { UserSignIn, UserSignUp } from '../types/auth'
 import { auth, db } from './firebase.service'
 import {
   signInWithEmailAndPassword,
@@ -11,7 +10,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore'
 /* async function signInSimulated(
   email: string,
   password: string
-): Promise<User | undefined> {
+): Promise<UserSignIn | undefined> {
   return new Promise((resolve) => {
     const roleFromEmail: Record<string, UserRole> = {
       'admin@gmail.com': UserRole.ADMIN,
@@ -35,19 +34,10 @@ import { doc, setDoc, getDoc } from 'firebase/firestore'
   })
 } */
 
-/* async function signUpSimulated(
-  user: UserSignUp
-): Promise<User | undefined> {
+/* async function signUpSimulated(user: UserSignUp): Promise<boolean> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      if (user.fullname !== 'jane doe') {
-        resolve(undefined)
-      }
-
-      resolve({
-        ...user,
-        id: '2',
-      })
+      resolve(user.fullname === 'john doe')
     }, 2000)
   })
 } */
@@ -55,7 +45,7 @@ import { doc, setDoc, getDoc } from 'firebase/firestore'
 export async function signInService(
   email: string,
   password: string
-): Promise<User | undefined> {
+): Promise<UserSignIn | undefined> {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -68,20 +58,18 @@ export async function signInService(
     const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid))
 
     if (!userDoc.exists()) {
-      throw new Error('El usuario no existe en Firestore')
+      throw new Error("User doesn't exist")
     }
 
-    const userData = userDoc.data() as User
-    return userData
+    const userSignIn = userDoc.data() as UserSignIn
+    return userSignIn
   } catch (error) {
-    console.error('Error al iniciar sesión en Firebase o en la API:', error)
+    console.error('Sign in error: ', error)
     return undefined
   }
 }
 
-export async function signUpService(
-  user: UserSignUp
-): Promise<User | undefined> {
+export async function signUpService(user: UserSignUp): Promise<boolean> {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -90,15 +78,15 @@ export async function signUpService(
     )
     const firebaseUser = userCredential.user
 
-    const userData: User = {
+    const userFirebaseData = {
       email: user.email,
       fullname: user.fullname,
       id: firebaseUser.uid,
       phoneNumber: user.phoneNumber,
-      role: user.role,
+      role: UserRole.CLIENT,
     }
 
-    await setDoc(doc(db, 'users', firebaseUser.uid), userData)
+    await setDoc(doc(db, 'users', firebaseUser.uid), userFirebaseData)
 
     const apiResponse = await fetch('http://localhost:2027/users', {
       method: 'POST',
@@ -106,7 +94,7 @@ export async function signUpService(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_user_role: user.role,
+        id_user_role: UserRole.CLIENT,
         user_fullname: user.fullname,
         user_email: user.email,
         user_password: user.password,
@@ -115,13 +103,9 @@ export async function signUpService(
       }),
     })
 
-    if (!apiResponse.ok) {
-      throw new Error('Error al guardar en la API externa')
-    }
-
-    return userData
+    return apiResponse.ok
   } catch (error) {
-    console.error('Error al registrar en Firebase:', error)
-    return undefined
+    console.error('Sign up error: ', error)
+    return false
   }
 }

@@ -1,5 +1,4 @@
-import { FormField, LoginForm, RegisterForm } from '../types/auth'
-import { User } from '../../users/types/user'
+import { LoginForm, RegisterForm, UserSignIn } from '../types/auth'
 import {
   isUser,
   isValidEmail,
@@ -7,13 +6,14 @@ import {
   isValidPassword,
   isValidPhoneNumber,
 } from '../../users/utils/user.util'
+import { FormField } from '../../shared/types/form'
 
 const USER_SESSION_KEY = 'user'
 
-export function validateFullname(fullname: string): FormField {
+export function validateFullname(fullname: string): FormField<string> {
   const hasFullnameError = !isValidFullname(fullname)
   const fullnameValidated = {
-    text: fullname,
+    value: fullname,
     error: hasFullnameError
       ? 'Invalid fullname (must be contain firstname and lastname)'
       : '',
@@ -21,19 +21,19 @@ export function validateFullname(fullname: string): FormField {
   return fullnameValidated
 }
 
-export function validateEmail(email: string): FormField {
+export function validateEmail(email: string): FormField<string> {
   const hasEmailError = !isValidEmail(email)
   const emailValidated = {
-    text: email,
+    value: email,
     error: hasEmailError ? 'Invalid email format' : '',
   }
   return emailValidated
 }
 
-export function validatePhoneNumber(phoneNumber: string): FormField {
+export function validatePhoneNumber(phoneNumber: string): FormField<string> {
   const hasPhoneNumberError = !isValidPhoneNumber(phoneNumber)
   const phoneNumberValidated = {
-    text: phoneNumber,
+    value: phoneNumber,
     error: hasPhoneNumberError
       ? 'Invalid phone number (must be contain 10 digits)'
       : '',
@@ -41,10 +41,10 @@ export function validatePhoneNumber(phoneNumber: string): FormField {
   return phoneNumberValidated
 }
 
-export function validatePassword(password: string): FormField {
+export function validatePassword(password: string): FormField<string> {
   const hasPasswordError = !isValidPassword(password)
   const passwordValidated = {
-    text: password,
+    value: password,
     error: hasPasswordError
       ? 'Invalid password (must be containe at least 6 characters)'
       : '',
@@ -54,9 +54,9 @@ export function validatePassword(password: string): FormField {
 
 export function validateLoginForm(form: LoginForm) {
   const formValidated = structuredClone(form)
-  formValidated.fields.email = validateEmail(formValidated.fields.email.text)
+  formValidated.fields.email = validateEmail(formValidated.fields.email.value)
   formValidated.fields.password = validatePassword(
-    formValidated.fields.password.text
+    formValidated.fields.password.value
   )
   const isValidForm = Object.entries(formValidated.fields).every(
     ([, field]) => {
@@ -71,14 +71,14 @@ export function validateLoginForm(form: LoginForm) {
 export function validateRegisterForm(form: RegisterForm) {
   const formValidated = structuredClone(form)
   formValidated.fields.fullname = validateFullname(
-    formValidated.fields.fullname.text
+    formValidated.fields.fullname.value
   )
-  formValidated.fields.email = validateEmail(formValidated.fields.email.text)
+  formValidated.fields.email = validateEmail(formValidated.fields.email.value)
   formValidated.fields.phoneNumber = validatePhoneNumber(
-    formValidated.fields.phoneNumber.text
+    formValidated.fields.phoneNumber.value
   )
   formValidated.fields.password = validatePassword(
-    formValidated.fields.password.text
+    formValidated.fields.password.value
   )
   const isValidForm = Object.entries(formValidated.fields).every(
     ([, field]) => {
@@ -90,7 +90,7 @@ export function validateRegisterForm(form: RegisterForm) {
   return formValidated
 }
 
-export function setLocalSession(user: User) {
+export function setLocalSession(user: UserSignIn) {
   localStorage.setItem(USER_SESSION_KEY, JSON.stringify(user))
 }
 
@@ -98,7 +98,7 @@ export function removeLocalSession() {
   localStorage.removeItem(USER_SESSION_KEY)
 }
 
-export function getLocalSession(): User | undefined {
+export function getLocalSession(): UserSignIn | undefined {
   const session = localStorage.getItem(USER_SESSION_KEY)
   if (!session) return
   const user = JSON.parse(session) as unknown
