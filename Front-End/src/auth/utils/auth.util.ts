@@ -7,8 +7,7 @@ import {
 import { isValidPhoneNumber } from '../../shared/utils/validations.util'
 import { isValidEmail } from '../../shared/utils/validations.util'
 import { FormField } from '../../shared/types/form'
-
-const USER_SESSION_KEY = 'user'
+import { USER_SESSION_KEY } from '../constants/userSession'
 
 export function validateFullname(fullname: string): FormField<string> {
   const hasFullnameError = !isValidUserName(fullname)
