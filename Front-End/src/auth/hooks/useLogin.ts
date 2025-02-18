@@ -1,11 +1,8 @@
 import { useEffect, useReducer } from 'react'
 import { LoginAction, LoginForm } from '../types/auth'
 import { LoginActionType } from '../enums/auth.enum'
-import {
-  validateEmail,
-  validateLoginForm,
-  validatePassword,
-} from '../utils/auth.util'
+import { validateLoginForm, validatePassword } from '../utils/auth.util'
+import { validateEmail } from '../../shared/utils/validations.util'
 import { useAuth } from './useAuth'
 
 function initializeLoginForm(): LoginForm {

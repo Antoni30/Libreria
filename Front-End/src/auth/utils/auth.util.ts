@@ -4,8 +4,10 @@ import {
   isValidUserName,
   isValidPassword,
 } from '../../users/utils/user.util'
-import { isValidPhoneNumber } from '../../shared/utils/validations.util'
-import { isValidEmail } from '../../shared/utils/validations.util'
+import {
+  validateEmail,
+  validatePhoneNumber,
+} from '../../shared/utils/validations.util'
 import { FormField } from '../../shared/types/form'
 import { USER_SESSION_KEY } from '../constants/userSession'
 
@@ -18,26 +20,6 @@ export function validateFullname(fullname: string): FormField<string> {
       : '',
   }
   return fullnameValidated
-}
-
-export function validateEmail(email: string): FormField<string> {
-  const hasEmailError = !isValidEmail(email)
-  const emailValidated = {
-    value: email,
-    error: hasEmailError ? 'Invalid email format' : '',
-  }
-  return emailValidated
-}
-
-export function validatePhoneNumber(phoneNumber: string): FormField<string> {
-  const hasPhoneNumberError = !isValidPhoneNumber(phoneNumber)
-  const phoneNumberValidated = {
-    value: phoneNumber,
-    error: hasPhoneNumberError
-      ? 'Invalid phone number (must be contain 10 digits)'
-      : '',
-  }
-  return phoneNumberValidated
 }
 
 export function validatePassword(password: string): FormField<string> {

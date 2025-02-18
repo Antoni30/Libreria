@@ -2,12 +2,12 @@ import { useEffect, useReducer } from 'react'
 import { RegisterActionType } from '../enums/auth.enum'
 import { RegisterAction, RegisterForm } from '../types/auth'
 import {
-  validateEmail,
   validateFullname,
   validatePassword,
-  validatePhoneNumber,
   validateRegisterForm,
 } from '../utils/auth.util'
+import { validatePhoneNumber } from '../../shared/utils/validations.util'
+import { validateEmail } from '../../shared/utils/validations.util'
 import { useAuth } from './useAuth'
 import { UserSignUp } from '../types/auth'
 import { useNavigate } from 'react-router'
