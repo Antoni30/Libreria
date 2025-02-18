@@ -1,17 +1,17 @@
 import { LoginForm, RegisterForm, UserSignIn } from '../types/auth'
 import {
   isUser,
-  isValidEmail,
-  isValidFullname,
+  isValidUserName,
   isValidPassword,
-  isValidPhoneNumber,
 } from '../../users/utils/user.util'
+import { isValidPhoneNumber } from '../../shared/utils/validations.util'
+import { isValidEmail } from '../../shared/utils/validations.util'
 import { FormField } from '../../shared/types/form'
 
 const USER_SESSION_KEY = 'user'
 
 export function validateFullname(fullname: string): FormField<string> {
-  const hasFullnameError = !isValidFullname(fullname)
+  const hasFullnameError = !isValidUserName(fullname)
   const fullnameValidated = {
     value: fullname,
     error: hasFullnameError

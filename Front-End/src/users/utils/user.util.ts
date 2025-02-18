@@ -1,16 +1,8 @@
 import { UserRole } from '../../users/enums/user.enum'
 import { User } from '../../users/types/user'
 
-export function isValidFullname(fullname: string) {
+export function isValidUserName(fullname: string) {
   return /^[A-Za-z]{3,}\s[A-Za-z]{3,}$/.test(fullname)
-}
-
-export function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}
-
-export function isValidPhoneNumber(phoneNumber: string) {
-  return /^\d{10}$/.test(phoneNumber)
 }
 
 export function isValidPassword(password: string) {
