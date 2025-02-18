@@ -11,21 +11,27 @@ export function isValidPhoneNumber(phoneNumber: string) {
 export function isValidAddress(address: string) {
   return /^[A-Za-z0-9\s,.-]{5,100}$/.test(address)
 }
+
 export function validateEmail(email: string): FormField<string> {
-  const hasEmailError = !isValidEmail(email)
-  const emailValidated = {
+  const isValid = isValidEmail(email)
+  return {
     value: email,
-    error: hasEmailError ? 'Invalid email format' : '',
+    error: !isValid ? 'Invalid email format' : '',
   }
-  return emailValidated
 }
+
 export function validatePhoneNumber(phoneNumber: string): FormField<string> {
-  const hasPhoneNumberError = !isValidPhoneNumber(phoneNumber)
-  const phoneNumberValidated = {
+  const isValid = isValidPhoneNumber(phoneNumber)
+  return {
     value: phoneNumber,
-    error: hasPhoneNumberError
-      ? 'Invalid phone number (must be contain 10 digits)'
-      : '',
+    error: !isValid ? 'Invalid phone number (must be contain 10 digits)' : '',
   }
-  return phoneNumberValidated
+}
+
+export function validateAddress(address: string): FormField<string> {
+  const isValid = isValidAddress(address)
+  return {
+    error: !isValid ? 'Invalid address' : '',
+    value: address,
+  }
 }
