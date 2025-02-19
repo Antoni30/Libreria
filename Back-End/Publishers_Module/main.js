@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { BASE_PATH, publisherRouter } from "./routes/publishers.routes.js";
 
-const PORT = 2025;
+const PORT = 2030;
 const app = express();
 
 app.use(cors());

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"nodemon Books_Module/main.js\" \"nodemon Editors_Module/main.js\" \"nodemon Sales_module/main.js\" \"nodemon Users_Module/main.js\""
+    "dev": "concurrently \"nodemon Books_Module/main.js\" \"nodemon Publishers_Module/main.js\" \"nodemon Sales_module/main.js\" \"nodemon Users_Module/main.js\""
   },
   "keywords": [],
   "author": "",

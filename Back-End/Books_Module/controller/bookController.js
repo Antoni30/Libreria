@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 import Book from "../model/bookModel.js";
 
 export const getBooks = async (req, res) => {
