@@ -163,7 +163,8 @@ create table PUBLISHER (
    PUBLISHER_ADDRESS    VARCHAR(200)         not null,
    PUBLISHER_PHONE      VARCHAR(15)          null,
    PUBLISHER_EMAIL      VARCHAR(100)         null,
-   constraint PK_PUBLISHER primary key (ID_PUBLISHER)
+   constraint PK_PUBLISHER primary key (ID_PUBLISHER),
+   constraint UNIQUE_PUBLISHER_NAME unique (PUBLISHER_NAME)
 );
 
 /*==============================================================*/
