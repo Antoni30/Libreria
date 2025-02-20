@@ -1,9 +1,14 @@
 import { pool } from "../../db.js";
+import { mapPublisherDb } from "../utils/mapper.js";
 
 export async function getPublishers(_, response) {
   try {
     const result = await pool.query("SELECT * FROM get_all_publishers();");
-    response.json({ data: result.rows });
+    const publisherFromDb = result.rows;
+    const publishersMapped = publisherFromDb.map((publisherFromDb) =>
+      mapPublisherDb(publisherFromDb)
+    );
+    response.json({ data: publishersMapped });
   } catch (error) {
     console.error(error);
     response.status(500).send({ error: "Server error" });
@@ -17,7 +22,9 @@ export async function getPublisherById(request, response) {
       id,
     ]);
     if (result.rows.length > 0) {
-      response.json({ data: result.rows[0] });
+      const publisherFromDb = result.rows[0];
+      const publisher = mapPublisherDb(publisherFromDb);
+      response.json({ data: publisher });
     } else {
       response.status(404).send({ error: "Publisher not found" });
     }
@@ -27,7 +34,7 @@ export async function getPublisherById(request, response) {
   }
 }
 
-export async function postPublishers(request, response) {
+export async function postPublisher(request, response) {
   const { name, address, phone, email } = request.body;
 
   if (!name || !address || !phone || !email) {
@@ -38,64 +45,74 @@ export async function postPublishers(request, response) {
   }
 
   try {
-    await pool.query("SELECT create_publisher($1, $2, $3, $4);", [
-      name,
-      address,
-      phone,
-      email,
-    ]);
-    response.status(201).send({ message: "Publisher created successfully" });
-  } catch (error) {
-    console.error(error);
-    response.status(500).send({ error: "Server error" });
-  }
-}
-
-export async function putPublishers(request, response) {
-  const { id } = request.params;
-  const { name, address, phone, email } = request.body;
-
-  if (!name || !address || !phone || !email) {
-    return response.status(400).json({
-      error:
-        "Request body incomplete. Fields required: { name, address, phone, email }",
-    });
-  }
-
-  try {
-    await pool.query("SELECT update_publisher($1, $2, $3, $4, $5);", [
-      id,
-      name,
-      address,
-      phone,
-      email,
-    ]);
-    response.send({ message: "Publisher updated successfully" });
-  } catch (error) {
-    console.error(error);
-    response.status(500).send({ error: "Server error" });
-  }
-}
-
-export async function deletePublishers(request, response) {
-  const { id } = request.params;
-  try {
-    const checkResult = await pool.query(
-      "SELECT check_books_for_publisher($1);",
-      [id]
+    // Llamar a la función PL/pgSQL para crear el publisher
+    const result = await pool.query(
+      "SELECT * FROM create_publisher($1, $2, $3, $4);",
+      [name, address, phone, email]
     );
-    const hasBooks = checkResult.rows[0].check_books_for_publisher;
 
-    if (hasBooks) {
-      response
-        .status(400)
-        .send({ error: "Cannot delete publisher with associated books" });
+    const publisherCreatedFromDb = result.rows[0];
+    const publisherCreatedFormatted = mapPublisherDb(publisherCreatedFromDb);
+
+    // Devolver el publisher creado
+    response.status(201).json({
+      message: "Publisher created successfully",
+      data: publisherCreatedFormatted,
+    });
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+}
+
+export async function putPublisher(request, response) {
+  const { id } = request.params;
+  const { name, address, phone, email } = request.body;
+
+  if (!name || !address || !phone || !email) {
+    return response.status(400).json({
+      error:
+        "Request body incomplete. Fields required: { name, address, phone, email }",
+    });
+  }
+
+  try {
+    // Llamar a la función PL/pgSQL para actualizar el publisher
+    const result = await pool.query(
+      "SELECT * FROM update_publisher($1, $2, $3, $4, $5);",
+      [id, name, address, phone, email]
+    );
+
+    const publisherUpdatedFromDb = result.rows[0];
+    const publisherUpdatedFormatted = mapPublisherDb(publisherUpdatedFromDb);
+    // Devolver el publisher actualizado
+    response.json({
+      message: "Publisher updated successfully",
+      data: publisherUpdatedFormatted,
+    });
+  } catch (error) {
+    response.status(400).send({ error: error.message });
+  }
+}
+
+export async function deletePublisher(request, response) {
+  const { id } = request.params;
+  try {
+    // Llamar a la función PL/pgSQL para eliminar el publisher y devolver sus datos
+    const result = await pool.query("SELECT * FROM delete_publisher($1);", [
+      id,
+    ]);
+
+    if (result.rows.length > 0) {
+      const publisherDeletedFromDb = result.rows[0];
+      const publisherDeleted = mapPublisherDb(publisherDeletedFromDb);
+      response.json({
+        message: "Publisher deleted successfully",
+        data: publisherDeleted, // Devolver el publisher eliminado
+      });
     } else {
-      await pool.query("SELECT delete_publisher($1);", [id]);
-      response.send({ message: "Publisher deleted successfully" });
+      response.status(404).send({ error: "Publisher not found" });
     }
   } catch (error) {
-    console.error(error);
-    response.status(500).send({ error: "Server error" });
+    response.status(400).send({ error: error.message });
   }
 }

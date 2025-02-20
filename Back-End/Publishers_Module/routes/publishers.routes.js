@@ -1,16 +1,16 @@
 import { Router } from "express";
 import {
-  deletePublishers,
+  deletePublisher,
   getPublisherById,
   getPublishers,
-  postPublishers,
-  putPublishers,
+  postPublisher,
+  putPublisher,
 } from "../controllers/publisher.controller.js";
 
 export const BASE_PATH = "/publishers";
 export const publisherRouter = Router();
 publisherRouter.get(`${BASE_PATH}`, getPublishers);
 publisherRouter.get(`${BASE_PATH}/:id`, getPublisherById);
-publisherRouter.post(`${BASE_PATH}`, postPublishers);
-publisherRouter.delete(`${BASE_PATH}/:id`, deletePublishers);
-publisherRouter.put(`${BASE_PATH}/:id`, putPublishers);
+publisherRouter.post(`${BASE_PATH}`, postPublisher);
+publisherRouter.delete(`${BASE_PATH}/:id`, deletePublisher);
+publisherRouter.put(`${BASE_PATH}/:id`, putPublisher);
