@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Publisher } from '../types/publishers'
+import { Publisher } from '../types/publisher'
 import {
   deletePublisherService,
   getPublishersService,
-} from '../services/publishers.service'
+} from '../services/publisher.service'
 
 export function usePublishers() {
   const [publishers, setPublishers] = useState<Publisher[]>([])
