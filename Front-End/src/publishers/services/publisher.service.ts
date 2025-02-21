@@ -3,26 +3,28 @@ import {
   EditPublisherDTO,
   Publisher,
 } from '../types/publisher'
-import PublishersMock from '../mocks/publishers.json'
+import { isPublisher, isPublisherApiResponse } from '../utils/publisher.util'
 
-async function getPublishersSimulated() {
+const PUBLISHER_API_PATH = 'http://localhost:2030/publishers'
+
+/* async function getPublishersSimulated() {
   return new Promise<Publisher[]>((resolve) => {
     setTimeout(() => {
       resolve(PublishersMock)
     }, 2000)
   })
-}
+} */
 
-async function getPublisherByIdSimulated(id: number) {
+/* async function getPublisherByIdSimulated(id: number) {
   const publisherFound = PublishersMock.find((publisher) => publisher.id === id)
   return new Promise<Publisher | undefined>((resolve) => {
     setTimeout(() => {
       resolve(publisherFound)
     }, 2000)
   })
-}
+} */
 
-async function deletePublishersSimulated(id: number) {
+/* async function deletePublishersSimulated(id: number) {
   const publisherDeleted = PublishersMock.find((element) => element.id === id)
 
   return new Promise<boolean>((resolve) => {
@@ -30,9 +32,9 @@ async function deletePublishersSimulated(id: number) {
       resolve(publisherDeleted !== undefined)
     }, 2000)
   })
-}
+} */
 
-async function addPublishersSimulated(publisher: AddPublisherDTO) {
+/* async function addPublishersSimulated(publisher: AddPublisherDTO) {
   const publisherExist = PublishersMock.find(
     (element) => element.name.toLowerCase() === publisher.name.toLowerCase()
   )
@@ -46,9 +48,9 @@ async function addPublishersSimulated(publisher: AddPublisherDTO) {
       }
     }, 2000)
   })
-}
+} */
 
-async function editPublishersSimulated(publisherUpdated: EditPublisherDTO) {
+/* async function editPublishersSimulated(publisherUpdated: EditPublisherDTO) {
   const publisherExist = PublishersMock.find(
     (element) => element.id === publisherUpdated.id
   )
@@ -62,30 +64,156 @@ async function editPublishersSimulated(publisherUpdated: EditPublisherDTO) {
       }
     }, 2000)
   })
-}
+} */
 
 export async function getPublishersService(): Promise<Publisher[]> {
-  return getPublishersSimulated()
+  try {
+    const response = await fetch(PUBLISHER_API_PATH)
+
+    if (!response.ok) throw new Error('Cannot retrieve publishers')
+
+    const json = (await response.json()) as unknown
+
+    if (!isPublisherApiResponse(json))
+      throw new Error('Response body doesnt match with expected response')
+
+    if (json.error) throw new Error(json.error)
+
+    const publishers = json.data as Publisher[]
+
+    if (typeof publishers.length === 'number') {
+      return publishers
+    } else {
+      throw new Error('Response data doesnt match with expected response')
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error: ${error.message}`)
+    }
+
+    return []
+  }
 }
 
 export async function getPublisherByIdService(
   id: number
 ): Promise<Publisher | undefined> {
-  return getPublisherByIdSimulated(id)
+  try {
+    const response = await fetch(`${PUBLISHER_API_PATH}/${id}`)
+
+    if (!response.ok) throw new Error('Cannot retrieve publisher')
+
+    const json = (await response.json()) as unknown
+
+    if (!isPublisherApiResponse(json))
+      throw new Error('Response body doesnt match with expected response')
+
+    const publisher = json.data
+
+    if (isPublisher(publisher)) {
+      return publisher
+    } else {
+      throw new Error('Response data doesnt match with expected response')
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error: ${error.message}`)
+    }
+
+    return
+  }
 }
 
 export async function deletePublisherService(id: number): Promise<boolean> {
-  return deletePublishersSimulated(id)
+  try {
+    const response = await fetch(`${PUBLISHER_API_PATH}/${id}`, {
+      method: 'DELETE',
+    })
+
+    if (!response.ok) throw new Error('Cannot retrieve publisher')
+
+    const json = (await response.json()) as unknown
+
+    if (!isPublisherApiResponse(json))
+      throw new Error('Response body doesnt match with expected response')
+
+    const publisherDeleted = json.data
+
+    return isPublisher(publisherDeleted)
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error: ${error.message}`)
+    }
+
+    return false
+  }
 }
 
 export async function addPublisherService(
   publisher: AddPublisherDTO
 ): Promise<Publisher | undefined> {
-  return addPublishersSimulated(publisher)
+  try {
+    const response = await fetch(PUBLISHER_API_PATH, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(publisher),
+    })
+
+    if (!response.ok) throw new Error('Cannot retrieve publisher')
+
+    const json = (await response.json()) as unknown
+
+    if (!isPublisherApiResponse(json))
+      throw new Error('Response body doesnt match with expected response')
+
+    const publisherAdded = json.data
+    if (!isPublisher(publisherAdded)) {
+      return undefined
+    }
+
+    return publisherAdded
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error: ${error.message}`)
+    }
+
+    return
+  }
 }
 
 export async function editPublisherService(
+  id: number,
   publisher: EditPublisherDTO
 ): Promise<Publisher | undefined> {
-  return editPublishersSimulated(publisher)
+  try {
+    const response = await fetch(`${PUBLISHER_API_PATH}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(publisher),
+    })
+
+    if (!response.ok) throw new Error('Cannot retrieve publisher')
+
+    const json = (await response.json()) as unknown
+
+    if (!isPublisherApiResponse(json))
+      throw new Error('Response body doesnt match with expected response')
+
+    const publisherUpdated = json.data
+    if (!isPublisher(publisherUpdated)) {
+      return undefined
+    }
+
+    return publisherUpdated
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error: ${error.message}`)
+    }
+
+    return
+  }
 }

@@ -1,10 +1,11 @@
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useEditPublisher } from '../hooks/useEditPublisher'
 import { IconFactory } from '../../shared/components/IconFactory'
 import { Icon } from '../../shared/enums/icon.enum'
 
 export function EditPublisher() {
   const { publisherId } = useParams()
+  const navigate = useNavigate()
 
   const {
     form,
@@ -31,6 +32,11 @@ export function EditPublisher() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     submit()
+  }
+
+  const goBack = () => {
+    const GO_BACK = -1
+    void navigate(GO_BACK)
   }
 
   return (
@@ -100,7 +106,15 @@ export function EditPublisher() {
           <p className="text-green-500 text-sm text-center">{message}</p>
         )}
 
-        <div className="flex justify-center">
+        <div className="flex justify-evenly">
+          <button
+            type="button"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer"
+            disabled={isLoadingForm}
+            onClick={goBack}
+          >
+            Cancelar
+          </button>
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer"

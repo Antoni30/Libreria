@@ -4,7 +4,12 @@ import {
   validateEmail,
   validatePhoneNumber,
 } from '../../shared/utils/validations.util'
-import { AddPublisherForm, EditPublisherForm } from '../types/publisher'
+import {
+  AddPublisherForm,
+  EditPublisherForm,
+  Publisher,
+  PublisherApiResponse,
+} from '../types/publisher'
 
 export function isValidPublisherName(name: string) {
   return /[A-Za-z0-9\s]{3,50}/.test(name)
@@ -62,4 +67,16 @@ export function validateEditPublisherForm(form: EditPublisherForm) {
   formValidated.isValid = isValidForm
 
   return formValidated
+}
+
+export function isPublisher(object: unknown): object is Publisher {
+  const publisher = object as Publisher
+  return publisher.id !== undefined
+}
+
+export function isPublisherApiResponse(
+  object: unknown
+): object is PublisherApiResponse {
+  const apiResponse = object as PublisherApiResponse
+  return apiResponse.error !== undefined || apiResponse.message !== undefined
 }

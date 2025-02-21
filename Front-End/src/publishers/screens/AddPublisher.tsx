@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router'
 import { IconFactory } from '../../shared/components/IconFactory'
 import { Icon } from '../../shared/enums/icon.enum'
 import { useAddPublisher } from '../hooks/useAddPublisher'
@@ -15,9 +16,16 @@ export function AddPublisher() {
     submit,
   } = useAddPublisher()
 
+  const navigate = useNavigate()
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     submit()
+  }
+
+  const handleCancel = () => {
+    const GO_BACK = -1
+    void navigate(GO_BACK)
   }
 
   return (
@@ -89,7 +97,15 @@ export function AddPublisher() {
           <p className="text-green-500 text-sm text-center">{message}</p>
         )}
 
-        <div className="flex justify-center">
+        <div className="flex justify-evenly">
+          <button
+            type="button"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer"
+            disabled={isLoading}
+            onClick={handleCancel}
+          >
+            Cancelar
+          </button>
           <button
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer"

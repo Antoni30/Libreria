@@ -7,7 +7,7 @@ import {
 
 export function usePublishers() {
   const [publishers, setPublishers] = useState<Publisher[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [publisherIdDeleting, setPublisherIdDeleting] = useState<number | null>(
     null
@@ -29,6 +29,8 @@ export function usePublishers() {
   }
 
   useEffect(() => {
+    setIsLoading(true)
+
     void getPublishersService().then((publishers) => {
       setPublishers(publishers)
       setIsLoading(false)

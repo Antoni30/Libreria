@@ -12,6 +12,8 @@ import {
 } from '../../shared/utils/validations.util'
 import { editPublisherService } from '../services/publisher.service'
 import { usePublisher } from './usePublisher'
+import { useNavigate } from 'react-router'
+import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
 
 function initializeForm(
   publisherToEdit: Publisher | undefined
@@ -87,6 +89,7 @@ export function useEditPublisher({ publisherId }: { publisherId?: number }) {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const navigate = useNavigate()
 
   const setAddress = (address: string) => {
     dispatch({
@@ -124,13 +127,13 @@ export function useEditPublisher({ publisherId }: { publisherId?: number }) {
     setMessage('')
 
     const updatedPublisher = {
-      id: publisherToUpdate.id,
+      name: publisherToUpdate.name,
       email: form.fields.email.value,
       address: form.fields.address.value,
       phone: form.fields.phone.value,
     }
 
-    editPublisherService(updatedPublisher)
+    editPublisherService(publisherToUpdate.id, updatedPublisher)
       .then((successful) => {
         if (successful) {
           setMessage('Publisher updated successfully')
@@ -147,9 +150,10 @@ export function useEditPublisher({ publisherId }: { publisherId?: number }) {
         setTimeout(() => {
           setMessage('')
           setError('')
-        }, 3000)
+          void navigate(ROUTES_PATH.publishers.absolute, { replace: true })
+        }, 2000)
       })
-  }, [form, publisherToUpdate])
+  }, [form, publisherToUpdate, navigate])
 
   useEffect(() => {
     if (!publisherToUpdate) return

@@ -44,7 +44,7 @@ export type AddPublisherAction =
       type: 'reset'
     }
 
-export type EditPublisherDTO = Omit<Publisher, 'name'>
+export type EditPublisherDTO = Publisher<Omit<Publisher, 'id'>>
 
 export type EditPublisherForm = FormState<Omit<Publisher, 'id'>>
 
@@ -76,3 +76,9 @@ export type EditPublisherAction =
         fieldsValues: Publisher
       }
     }
+
+export interface PublisherApiResponse {
+  error?: string
+  message?: string
+  data?: Publisher | Publisher[]
+}
