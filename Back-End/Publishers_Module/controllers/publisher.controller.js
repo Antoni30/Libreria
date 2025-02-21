@@ -8,7 +8,7 @@ export async function getPublishers(_, response) {
     const publishersMapped = publisherFromDb.map((publisherFromDb) =>
       mapPublisherDb(publisherFromDb)
     );
-    response.json({ data: publishersMapped });
+    response.json({ message: "successful", data: publishersMapped });
   } catch (error) {
     console.error(error);
     response.status(500).send({ error: "Server error" });
@@ -24,7 +24,7 @@ export async function getPublisherById(request, response) {
     if (result.rows.length > 0) {
       const publisherFromDb = result.rows[0];
       const publisher = mapPublisherDb(publisherFromDb);
-      response.json({ data: publisher });
+      response.json({ message: "successful", data: publisher });
     } else {
       response.status(404).send({ error: "Publisher not found" });
     }
@@ -45,7 +45,6 @@ export async function postPublisher(request, response) {
   }
 
   try {
-    // Llamar a la función PL/pgSQL para crear el publisher
     const result = await pool.query(
       "SELECT * FROM create_publisher($1, $2, $3, $4);",
       [name, address, phone, email]
@@ -54,7 +53,6 @@ export async function postPublisher(request, response) {
     const publisherCreatedFromDb = result.rows[0];
     const publisherCreatedFormatted = mapPublisherDb(publisherCreatedFromDb);
 
-    // Devolver el publisher creado
     response.status(201).json({
       message: "Publisher created successfully",
       data: publisherCreatedFormatted,
@@ -76,7 +74,6 @@ export async function putPublisher(request, response) {
   }
 
   try {
-    // Llamar a la función PL/pgSQL para actualizar el publisher
     const result = await pool.query(
       "SELECT * FROM update_publisher($1, $2, $3, $4, $5);",
       [id, name, address, phone, email]
@@ -84,7 +81,7 @@ export async function putPublisher(request, response) {
 
     const publisherUpdatedFromDb = result.rows[0];
     const publisherUpdatedFormatted = mapPublisherDb(publisherUpdatedFromDb);
-    // Devolver el publisher actualizado
+
     response.json({
       message: "Publisher updated successfully",
       data: publisherUpdatedFormatted,
@@ -97,7 +94,6 @@ export async function putPublisher(request, response) {
 export async function deletePublisher(request, response) {
   const { id } = request.params;
   try {
-    // Llamar a la función PL/pgSQL para eliminar el publisher y devolver sus datos
     const result = await pool.query("SELECT * FROM delete_publisher($1);", [
       id,
     ]);
@@ -107,7 +103,7 @@ export async function deletePublisher(request, response) {
       const publisherDeleted = mapPublisherDb(publisherDeletedFromDb);
       response.json({
         message: "Publisher deleted successfully",
-        data: publisherDeleted, // Devolver el publisher eliminado
+        data: publisherDeleted,
       });
     } else {
       response.status(404).send({ error: "Publisher not found" });
