@@ -62,8 +62,9 @@ export async function signInService(
     }
 
     const userSignIn = userDoc.data() as UserSignIn
-    //llamar de aqui para recueprar el rol original
-    
+
+    // TODO: llamar de aqui para recuperar el rol original
+
     return userSignIn
   } catch (error) {
     console.error('Sign in error: ', error)
