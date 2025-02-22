@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import RouteBookSales from "./routes/sale_routes.js";
+import RouteBookSales from "./routes/sale.routes.js";
+import RouteSales_Book from "./routes/sale_books.routes.js"
 
 const app = express();
 app.use(cors());
@@ -12,7 +13,8 @@ app.get("/", (req, res) => {
 });
 
 // Register routes
-app.use(RouteBookSales);
+app.use("/sales",RouteBookSales);
+app.use("/book-sales",RouteSales_Book);
 
 // Start server
 const PORT = 2027;

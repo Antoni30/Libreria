@@ -134,3 +134,13 @@ export const getUserByFirebaseID = async (req, res) => {
         });
     }
 };
+
+export const getBooksPurchasedByUser = async (req, res) => {
+    try {
+        const { id_user } = req.params;
+        const { rows } = await pool.query("SELECT * FROM get_books_purchased_by_user($1)", [id_user]);
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(500).json({ message: "Error en el servidor", error: error.message });
+    }
+};
