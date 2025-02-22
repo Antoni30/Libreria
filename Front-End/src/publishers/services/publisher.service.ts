@@ -3,7 +3,8 @@ import {
   PutPublisherDTO,
   Publisher,
 } from '../types/publisher'
-import { isPublisher, isPublisherApiResponse } from '../utils/publisher.util'
+import { isPublisher } from '../utils/publisher.util'
+import { isPublisherApiResponse } from '../utils/publisher-api.util'
 
 const PUBLISHER_API_PATH = 'http://localhost:2030/publishers'
 

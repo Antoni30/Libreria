@@ -8,7 +8,6 @@ import {
   AddPublisherForm,
   EditPublisherForm,
   Publisher,
-  PublisherApiResponse,
 } from '../types/publisher'
 
 export function isValidPublisherName(name: string) {
@@ -72,11 +71,4 @@ export function validateEditPublisherForm(form: EditPublisherForm) {
 export function isPublisher(object: unknown): object is Publisher {
   const publisher = object as Publisher
   return publisher.id !== undefined
-}
-
-export function isPublisherApiResponse(
-  object: unknown
-): object is PublisherApiResponse {
-  const apiResponse = object as PublisherApiResponse
-  return apiResponse.error !== undefined || apiResponse.message !== undefined
 }
