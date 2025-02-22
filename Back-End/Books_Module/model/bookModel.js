@@ -14,6 +14,9 @@ class Book {
     getBookId() {
         return this.id_book;
     }
+    getBookIsrin(){
+        return this.getBookIsrin
+    }
 
     getPublisherId() {
         return this.id_publisher;
