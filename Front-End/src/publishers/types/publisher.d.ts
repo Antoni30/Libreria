@@ -8,9 +8,15 @@ export interface Publisher {
   email: string
 }
 
-export type AddPublisherDTO = Omit<Publisher, 'id'>
+export interface PublisherApiResponse {
+  error?: string
+  message?: string
+  data?: Publisher | Publisher[]
+}
 
-export type AddPublisherForm = FormState<Omit<Publisher, 'id'>>
+export type PostPublisherDTO = Omit<Publisher, 'id'>
+
+export type AddPublisherForm = FormState<PostPublisherDTO>
 
 export type AddPublisherAction =
   | {
@@ -44,9 +50,9 @@ export type AddPublisherAction =
       type: 'reset'
     }
 
-export type EditPublisherDTO = Publisher<Omit<Publisher, 'id'>>
+export type PutPublisherDTO = Omit<Publisher, 'id'>
 
-export type EditPublisherForm = FormState<Omit<Publisher, 'id'>>
+export type EditPublisherForm = FormState<PutPublisherDTO>
 
 export type EditPublisherAction =
   | {
@@ -76,9 +82,3 @@ export type EditPublisherAction =
         fieldsValues: Publisher
       }
     }
-
-export interface PublisherApiResponse {
-  error?: string
-  message?: string
-  data?: Publisher | Publisher[]
-}

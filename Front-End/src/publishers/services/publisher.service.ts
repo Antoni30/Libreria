@@ -1,6 +1,6 @@
 import {
-  AddPublisherDTO,
-  EditPublisherDTO,
+  PostPublisherDTO,
+  PutPublisherDTO,
   Publisher,
 } from '../types/publisher'
 import { isPublisher, isPublisherApiResponse } from '../utils/publisher.util'
@@ -34,7 +34,7 @@ const PUBLISHER_API_PATH = 'http://localhost:2030/publishers'
   })
 } */
 
-/* async function addPublishersSimulated(publisher: AddPublisherDTO) {
+/* async function addPublishersSimulated(publisher: PostPublisherDTO) {
   const publisherExist = PublishersMock.find(
     (element) => element.name.toLowerCase() === publisher.name.toLowerCase()
   )
@@ -50,7 +50,7 @@ const PUBLISHER_API_PATH = 'http://localhost:2030/publishers'
   })
 } */
 
-/* async function editPublishersSimulated(publisherUpdated: EditPublisherDTO) {
+/* async function editPublishersSimulated(publisherUpdated: PutPublisherDTO) {
   const publisherExist = PublishersMock.find(
     (element) => element.id === publisherUpdated.id
   )
@@ -150,7 +150,7 @@ export async function deletePublisherService(id: number): Promise<boolean> {
 }
 
 export async function addPublisherService(
-  publisher: AddPublisherDTO
+  publisher: PostPublisherDTO
 ): Promise<Publisher | undefined> {
   try {
     const response = await fetch(PUBLISHER_API_PATH, {
@@ -185,7 +185,7 @@ export async function addPublisherService(
 
 export async function editPublisherService(
   id: number,
-  publisher: EditPublisherDTO
+  publisher: PutPublisherDTO
 ): Promise<Publisher | undefined> {
   try {
     const response = await fetch(`${PUBLISHER_API_PATH}/${id}`, {
