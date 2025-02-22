@@ -11,8 +11,8 @@ app.get("/", (req, res) => {
   res.send("Users Module 👤");
 });
 
-app.use(RouteRoles);
-app.use(RouteUser);
+app.use("/user_roles",RouteRoles);
+app.use("/users",RouteUser);
 
 app.listen(2028, () => {
   console.log("Run Users Module 👤: http://localhost:2028");

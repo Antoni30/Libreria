@@ -3,14 +3,14 @@ import { deleteUser, getUsers, postUser, putUser ,getUserByID,getUserByFirebaseI
 
 const route = Router()
 
-route.get("/users",getUsers)
-route.post("/users",postUser)
-route.put("/users/:id",putUser)
-route.delete("/users/:id",deleteUser)
+route.get("/",getUsers)
+route.post("",postUser)
+route.put("/:id",putUser)
+route.delete("/:id",deleteUser)
 
 route.get("/users_ID/:id",getUserByID);
 route.get("/users_FB/:id",getUserByFirebaseID);
 
-route.get("/user/:id_user/books", getBooksPurchasedByUser);
+route.get("/:id_user/books", getBooksPurchasedByUser);
 
 export default route;
