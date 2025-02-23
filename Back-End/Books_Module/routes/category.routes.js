@@ -9,4 +9,5 @@ router.post("/",postCategory);
 router.put("/:id",putCategory);
 router.delete("/:id",deleteCategory);
 
+
 export default router;

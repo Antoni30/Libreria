@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, getUsers, postUser, putUser ,getUserByID,getUserByFirebaseID,getBooksPurchasedByUser} from "../controller/users.controller.js";
+import { deleteUser, getUsers, postUser, putUser ,getUserByID,getUserByFirebaseID,getBooksPurchasedByUser,searchUser} from "../controller/users.controller.js";
 
 const route = Router()
 
@@ -12,5 +12,6 @@ route.get("/users_ID/:id",getUserByID);
 route.get("/users_FB/:id",getUserByFirebaseID);
 
 route.get("/:id_user/books", getBooksPurchasedByUser);
+route.post("/search", searchUser);
 
 export default route;

@@ -144,3 +144,22 @@ export const getBooksPurchasedByUser = async (req, res) => {
         res.status(500).json({ message: "Error en el servidor", error: error.message });
     }
 };
+
+export const searchUser = async (req, res) => {
+    try {
+        let { email, fullname } = req.body;
+
+        // Si el valor es "null" (string), lo convertimos en null real
+        email = email === "null" ? null : email;
+        fullname = fullname === "null" ? null : fullname;
+
+        const { rows } = await pool.query(
+            "SELECT * FROM search_user_closest($1, $2)", 
+            [email, fullname]
+        );
+
+        res.status(200).json(rows.length > 0 ? rows[0] : { message: "No se encontró un usuario cercano" });
+    } catch (error) {
+        res.status(500).json({ message: "Error en el servidor", error: error.message });
+    }
+};
