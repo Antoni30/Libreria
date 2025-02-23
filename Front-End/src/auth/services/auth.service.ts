@@ -79,6 +79,7 @@ export async function signUpService(user: UserSignUp): Promise<boolean> {
       user.email,
       user.password
     )
+    const roleCreate =  UserRole.LIBRARIAN
     const firebaseUser = userCredential.user
 
     const userFirebaseData = {
@@ -86,18 +87,18 @@ export async function signUpService(user: UserSignUp): Promise<boolean> {
       fullname: user.fullname,
       id: firebaseUser.uid,
       phoneNumber: user.phoneNumber,
-      role: UserRole.CLIENT,
+      role: roleCreate,
     }
 
     await setDoc(doc(db, 'users', firebaseUser.uid), userFirebaseData)
 
-    const apiResponse = await fetch('http://localhost:2027/users', {
+    const apiResponse = await fetch('http://localhost:2028/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_user_role: UserRole.CLIENT,
+        id_user_role: roleCreate,
         user_fullname: user.fullname,
         user_email: user.email,
         user_password: user.password,
