@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { UserRole } from '../../users/enums/user.enum'
 import { UserSignIn, UserSignUp } from '../types/auth'
 import { auth, db } from './firebase.service'
@@ -63,7 +65,11 @@ export async function signInService(
 
     const userSignIn = userDoc.data() as UserSignIn
 
-    // TODO: llamar de aqui para recuperar el rol original
+    const response = await fetch(`http://localhost:2028/users/users_FB/${firebaseUser.uid}`);
+    if (!response.ok) throw new Error("Failed to fetch user");
+    const data = await response.json();
+    console.log(data.id_user_role)
+    userSignIn.role=data.id_user_role
 
     return userSignIn
   } catch (error) {
