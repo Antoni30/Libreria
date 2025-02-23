@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import RouteRoles from "./routes/user_roles.routes.js";
 import RouteUser from "./routes/users.routes.js";
+import FirebaseUpdate from "./routes/firebaseUpdate.routes.js"
+
 
 const app = express();
 app.use(cors());
@@ -12,8 +14,11 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user_roles",RouteRoles);
-
 app.use("/users",RouteUser);
+app.use("/firebase",FirebaseUpdate);
+
+
+
 
 app.listen(2028, () => {
   console.log("Run Users Module 👤: http://localhost:2028");
