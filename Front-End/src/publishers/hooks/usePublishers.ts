@@ -3,7 +3,7 @@ import { Publisher } from '../types/publisher'
 import { getPublishers } from '../services/publisher.service'
 
 export function usePublishers() {
-  const [publishers, setPublishers] = useState<Publisher[]>([])
+  const [publishers, setPublishers] = useState<Publisher[]>()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 

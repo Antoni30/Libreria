@@ -1,13 +1,11 @@
 import { Link } from 'react-router'
 import { IconFactory } from '../../shared/components/IconFactory'
 import { Icon } from '../../shared/enums/icon.enum'
-import { usePublishers } from '../hooks/usePublishers'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
-import { useDeletePublisher } from '../hooks/useDeletePublisher'
+import { useDashboardPublisher } from '../hooks/useDashboardPublisher'
 
 export function Publishers() {
-  const { publishers, isLoading } = usePublishers()
-  const { idDeleting, deletePublisher } = useDeletePublisher()
+  const { publishers, idDeleting, deletePublisher } = useDashboardPublisher()
 
   return (
     <main>
@@ -33,7 +31,7 @@ export function Publishers() {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {!publishers ? (
               <tr>
                 <td colSpan={5} className="py-4 text-center text-gray-500">
                   <IconFactory icon={Icon.LOADING} />
@@ -67,7 +65,7 @@ export function Publishers() {
                         </Link>
                         <button
                           className="text-red-500 hover:text-red-700 hover:cursor-pointer"
-                          onClick={() => void deletePublisher(publisher.id)}
+                          onClick={() => deletePublisher(publisher.id)}
                         >
                           <IconFactory icon={Icon.DELETE} />
                         </button>
