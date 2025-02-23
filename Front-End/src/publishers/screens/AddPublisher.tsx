@@ -104,7 +104,7 @@ export function AddPublisher() {
             disabled={isLoading}
             onClick={handleCancel}
           >
-            Cancelar
+            Cancel
           </button>
           <button
             type="submit"

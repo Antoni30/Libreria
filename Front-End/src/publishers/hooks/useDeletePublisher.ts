@@ -2,37 +2,42 @@ import { useEffect, useState } from 'react'
 import { deletePublisher as deletePublisherService } from '../services/publisher.service'
 
 export function useDeletePublisher() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
-  const [idDeleting, setIdDeleting] = useState<number | undefined>()
 
   const deletePublisher = (id: number) => {
-    setIdDeleting(id)
+    setMessage('')
+    setError('')
+    setIsLoading(true)
 
     deletePublisherService(id)
-      .then((isPublisherDeleted) => {
-        if (!isPublisherDeleted) {
-          setError('Publisher cant be deleted')
+      .then((isDeleted) => {
+        if (isDeleted) {
+          setMessage('Publisher deleted successfully')
+        } else {
+          setError(
+            'Publisher cant be deleted because is associated with a book'
+          )
         }
       })
-      .catch(() => {
-        setError('An error occurred while trying to delete the publisher')
-      })
-      .finally(() => {
-        setIdDeleting(undefined)
-      })
+      .catch(() => setError('Publisher cant be deleted'))
+      .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
-    if (!error.length) return
+    if (!error.length && !message.length) return
 
     setTimeout(() => {
       setError('')
+      setMessage('')
     }, 2500)
-  }, [error])
+  }, [error, message])
 
   return {
+    message,
+    isLoading,
     error,
-    idDeleting,
     deletePublisher,
   }
 }

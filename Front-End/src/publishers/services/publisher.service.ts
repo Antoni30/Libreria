@@ -58,7 +58,7 @@ export async function deletePublisher(id: number): Promise<boolean> {
       method: 'DELETE',
     })
 
-    if (!response.ok) throw new Error('Cannot retrieve publisher')
+    if (!response.ok) throw new Error('Cannot delete publisher')
 
     const jsonResponse = (await response.json()) as DeletePublisherResponse
     const isPublisherDeleted = jsonResponse.message !== undefined
@@ -114,7 +114,7 @@ export async function putPublisher(
       body: JSON.stringify(publisher),
     })
 
-    if (!response.ok) throw new Error('Cannot retrieve publisher')
+    if (!response.ok) throw new Error('Cannot update publisher')
 
     const jsonResponse = (await response.json()) as PutPublisherResponse
 

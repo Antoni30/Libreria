@@ -113,7 +113,7 @@ export function EditPublisher() {
             disabled={isLoadingForm}
             onClick={goBack}
           >
-            Cancelar
+            Cancel
           </button>
           <button
             type="submit"
