@@ -1,71 +1,14 @@
+import { AddPublisher, EditPublisher, Publisher } from '../types/publisher'
 import {
-  PostPublisherDTO,
-  PutPublisherDTO,
-  Publisher,
-} from '../types/publisher'
-import { isPublisher } from '../utils/publisher.util'
-import { isPublisherApiResponse } from '../utils/publisher-api.util'
+  DeletePublisherResponse,
+  GetPublisherByIdResponse,
+  GetPublishersResponse,
+  PostPublisherResponse,
+  PutPublisherResponse,
+} from '../types/publisher.api'
+import { mapPublisherDTO } from '../utils/publisher.api.util'
 
 const PUBLISHER_API_PATH = 'http://localhost:2030/publishers'
-
-/* async function getPublishersSimulated() {
-  return new Promise<Publisher[]>((resolve) => {
-    setTimeout(() => {
-      resolve(PublishersMock)
-    }, 2000)
-  })
-} */
-
-/* async function getPublisherByIdSimulated(id: number) {
-  const publisherFound = PublishersMock.find((publisher) => publisher.id === id)
-  return new Promise<Publisher | undefined>((resolve) => {
-    setTimeout(() => {
-      resolve(publisherFound)
-    }, 2000)
-  })
-} */
-
-/* async function deletePublishersSimulated(id: number) {
-  const publisherDeleted = PublishersMock.find((element) => element.id === id)
-
-  return new Promise<boolean>((resolve) => {
-    setTimeout(() => {
-      resolve(publisherDeleted !== undefined)
-    }, 2000)
-  })
-} */
-
-/* async function addPublishersSimulated(publisher: PostPublisherDTO) {
-  const publisherExist = PublishersMock.find(
-    (element) => element.name.toLowerCase() === publisher.name.toLowerCase()
-  )
-
-  return new Promise<Publisher | undefined>((resolve) => {
-    setTimeout(() => {
-      if (publisherExist) {
-        resolve(undefined)
-      } else {
-        resolve({ ...publisher, id: 100 })
-      }
-    }, 2000)
-  })
-} */
-
-/* async function editPublishersSimulated(publisherUpdated: PutPublisherDTO) {
-  const publisherExist = PublishersMock.find(
-    (element) => element.id === publisherUpdated.id
-  )
-
-  return new Promise<Publisher | undefined>((resolve) => {
-    setTimeout(() => {
-      if (!publisherExist) {
-        resolve(undefined)
-      } else {
-        resolve({ ...publisherUpdated, name: publisherExist.name })
-      }
-    }, 2000)
-  })
-} */
 
 export async function getPublishersService(): Promise<Publisher[]> {
   try {
@@ -73,20 +16,13 @@ export async function getPublishersService(): Promise<Publisher[]> {
 
     if (!response.ok) throw new Error('Cannot retrieve publishers')
 
-    const json = (await response.json()) as unknown
+    const jsonResponse = (await response.json()) as GetPublishersResponse
 
-    if (!isPublisherApiResponse(json))
-      throw new Error('Response body doesnt match with expected response')
+    if (jsonResponse.error !== undefined) throw new Error(jsonResponse.error)
 
-    if (json.error) throw new Error(json.error)
-
-    const publishers = json.data as Publisher[]
-
-    if (typeof publishers.length === 'number') {
-      return publishers
-    } else {
-      throw new Error('Response data doesnt match with expected response')
-    }
+    return jsonResponse.data.map((publisherDTO) =>
+      mapPublisherDTO(publisherDTO)
+    )
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
@@ -104,24 +40,15 @@ export async function getPublisherByIdService(
 
     if (!response.ok) throw new Error('Cannot retrieve publisher')
 
-    const json = (await response.json()) as unknown
+    const jsonResponse = (await response.json()) as GetPublisherByIdResponse
 
-    if (!isPublisherApiResponse(json))
-      throw new Error('Response body doesnt match with expected response')
+    if (jsonResponse.error !== undefined) return undefined
 
-    const publisher = json.data
-
-    if (isPublisher(publisher)) {
-      return publisher
-    } else {
-      throw new Error('Response data doesnt match with expected response')
-    }
+    return mapPublisherDTO(jsonResponse.data)
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
     }
-
-    return
   }
 }
 
@@ -133,14 +60,10 @@ export async function deletePublisherService(id: number): Promise<boolean> {
 
     if (!response.ok) throw new Error('Cannot retrieve publisher')
 
-    const json = (await response.json()) as unknown
+    const jsonResponse = (await response.json()) as DeletePublisherResponse
+    const isPublisherDeleted = jsonResponse.message !== undefined
 
-    if (!isPublisherApiResponse(json))
-      throw new Error('Response body doesnt match with expected response')
-
-    const publisherDeleted = json.data
-
-    return isPublisher(publisherDeleted)
+    return isPublisherDeleted
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
@@ -151,7 +74,7 @@ export async function deletePublisherService(id: number): Promise<boolean> {
 }
 
 export async function addPublisherService(
-  publisher: PostPublisherDTO
+  publisher: AddPublisher
 ): Promise<Publisher | undefined> {
   try {
     const response = await fetch(PUBLISHER_API_PATH, {
@@ -164,29 +87,23 @@ export async function addPublisherService(
 
     if (!response.ok) throw new Error('Cannot retrieve publisher')
 
-    const json = (await response.json()) as unknown
+    const jsonResponse = (await response.json()) as PostPublisherResponse
 
-    if (!isPublisherApiResponse(json))
-      throw new Error('Response body doesnt match with expected response')
+    if (jsonResponse.error !== undefined) throw new Error(jsonResponse.error)
 
-    const publisherAdded = json.data
-    if (!isPublisher(publisherAdded)) {
-      return undefined
-    }
+    const publisherAdded = jsonResponse.data
 
-    return publisherAdded
+    return mapPublisherDTO(publisherAdded)
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
     }
-
-    return
   }
 }
 
 export async function editPublisherService(
   id: number,
-  publisher: PutPublisherDTO
+  publisher: EditPublisher
 ): Promise<Publisher | undefined> {
   try {
     const response = await fetch(`${PUBLISHER_API_PATH}/${id}`, {
@@ -199,22 +116,16 @@ export async function editPublisherService(
 
     if (!response.ok) throw new Error('Cannot retrieve publisher')
 
-    const json = (await response.json()) as unknown
+    const jsonResponse = (await response.json()) as PutPublisherResponse
 
-    if (!isPublisherApiResponse(json))
-      throw new Error('Response body doesnt match with expected response')
+    if (jsonResponse.error !== undefined) throw new Error(jsonResponse.error)
 
-    const publisherUpdated = json.data
-    if (!isPublisher(publisherUpdated)) {
-      return undefined
-    }
+    const publisherUpdated = jsonResponse.data
 
-    return publisherUpdated
+    return mapPublisherDTO(publisherUpdated)
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
     }
-
-    return
   }
 }

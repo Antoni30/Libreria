@@ -14,9 +14,9 @@ export interface PublisherApiResponse {
   data?: Publisher | Publisher[]
 }
 
-export type PostPublisherDTO = Omit<Publisher, 'id'>
+export type AddPublisher = Omit<Publisher, 'id'>
 
-export type AddPublisherForm = FormState<PostPublisherDTO>
+export type AddPublisherForm = FormState<AddPublisher>
 
 export type AddPublisherAction =
   | {
@@ -50,9 +50,9 @@ export type AddPublisherAction =
       type: 'reset'
     }
 
-export type PutPublisherDTO = Omit<Publisher, 'id'>
+export type EditPublisher = Omit<Publisher, 'id'>
 
-export type EditPublisherForm = FormState<PutPublisherDTO>
+export type EditPublisherForm = FormState<EditPublisher>
 
 export type EditPublisherAction =
   | {
