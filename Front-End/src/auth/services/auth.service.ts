@@ -85,7 +85,7 @@ export async function signUpService(user: UserSignUp): Promise<boolean> {
       user.email,
       user.password
     )
-    const roleCreate =  UserRole.LIBRARIAN
+    const roleCreate =  UserRole.CLIENT
     const firebaseUser = userCredential.user
 
     const userFirebaseData = {
