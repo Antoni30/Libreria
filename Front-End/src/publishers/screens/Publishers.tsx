@@ -15,7 +15,7 @@ export function Publishers() {
         <div className="flex justify-between mb-4">
           <h2 className="text-2xl font-bold">Publisher dashboard</h2>
           <Link
-            to="/publishers/add"
+            to={ROUTES_PATH.publishers.add.absolute}
             className="bg-blue-500 text-white px-4 py-2 rounded flex gap-1 items-center"
           >
             <IconFactory icon={Icon.CREATE} />
