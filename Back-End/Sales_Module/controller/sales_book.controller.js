@@ -76,4 +76,25 @@ export const updateSaleBookRelation = async (req, res) => {
         res.status(500).json({ message: "Error en el servidor", error: error.message });
     }
 };
-
+export const insertSale =  async (req, res) => {
+    try {
+      const { id_book, id_user, book_sale_quantity_sold, book_sale_unit_price } =
+        req.body;
+  
+      if (!id_book || !id_user || !book_sale_quantity_sold || !book_sale_unit_price) {
+        return res.status(400).json({ error: "Todos los campos son requeridos" });
+      }
+  
+      const result = await pool.query(
+        `SELECT insert_book_sale($2, $1, $3, $4)`,
+        [id_book, id_user, book_sale_quantity_sold, book_sale_unit_price]
+      );
+  
+      res.status(201).json({
+        message: "Venta de libro registrada exitosamente",
+        result: result.rows,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Error interno del servidor",error: error.message });
+    }
+  }
