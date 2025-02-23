@@ -38,6 +38,7 @@ CREATE TABLE public.book (
 	book_quantity_available int4 NOT NULL,
 	book_status varchar(12) NOT NULL,
 	book_cover_image varchar(500) NOT NULL,
+	book_price numeric(10, 2) NOT NULL,
 	CONSTRAINT pk_book primary key (id_book),
 	CONSTRAINT fk_book_possess2_publishe FOREIGN KEY (id_publisher) REFERENCES public.publisher(id_publisher) ON DELETE RESTRICT ON UPDATE RESTRICT
 );

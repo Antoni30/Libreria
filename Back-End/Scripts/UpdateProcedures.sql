@@ -540,7 +540,8 @@ RETURNS TABLE (
     book_publication_year INT,
     book_quantity_available INT,
     book_status VARCHAR(12),
-    book_cover_image VARCHAR(500)
+    book_cover_image VARCHAR(500),
+    book_price NUMERIC(10,2)
 ) 
 LANGUAGE plpgsql
 AS $$
@@ -562,7 +563,8 @@ RETURNS TABLE (
     book_publication_year INT,
     book_quantity_available INT,
     book_status VARCHAR(12),
-    book_cover_image VARCHAR(500)
+    book_cover_image VARCHAR(500),
+    book_price NUMERIC(10,2)
 ) AS $$
 BEGIN
     -- Verifica si el libro existe
@@ -581,7 +583,8 @@ BEGIN
         b.book_publication_year, 
         b.book_quantity_available, 
         b.book_status, 
-        b.book_cover_image
+        b.book_cover_image,
+        b.book_price
     FROM book b
     WHERE b.id_book = p_id_book;
 END;
@@ -597,7 +600,8 @@ CREATE OR REPLACE PROCEDURE create_book(
     p_book_publication_year INT,
     p_book_quantity_available INT,
     p_book_status VARCHAR(12),
-    p_book_cover_image VARCHAR(500)
+    p_book_cover_image VARCHAR(500),
+    p_book_price NUMERIC(10,2)
 )
 LANGUAGE plpgsql
 AS $$
@@ -623,15 +627,19 @@ BEGIN
         RAISE EXCEPTION 'La cantidad disponible no puede ser negativa';
     END IF;
 
+    IF p_book_price < 0 THEN
+        RAISE EXCEPTION 'El precio no puede ser negativo';
+    END IF;
+
     -- Inserción de datos SIN id_book (lo genera automáticamente)
     INSERT INTO book (
         id_publisher, book_title, book_author, book_isbn, 
         book_publication_year, book_quantity_available, 
-        book_status, book_cover_image
+        book_status, book_cover_image, book_price
     ) VALUES (
         p_id_publisher, p_book_title, p_book_author, p_book_isbn, 
         p_book_publication_year, p_book_quantity_available, 
-        p_book_status, p_book_cover_image
+        p_book_status, p_book_cover_image, p_book_price
     );
 END;
 $$;
@@ -645,7 +653,8 @@ CREATE OR REPLACE PROCEDURE update_book(
     p_book_publication_year INT,
     p_book_quantity_available INT,
     p_book_status VARCHAR(12),
-    p_book_cover_image VARCHAR(500)
+    p_book_cover_image VARCHAR(500),
+    p_book_price NUMERIC(10,2)
 )
 LANGUAGE plpgsql
 AS $$
@@ -676,6 +685,10 @@ BEGIN
         RAISE EXCEPTION 'La cantidad disponible no puede ser negativa';
     END IF;
 
+    IF p_book_price < 0 THEN
+        RAISE EXCEPTION 'El precio no puede ser negativo';
+    END IF;
+
     -- Actualización de datos
     UPDATE book
     SET 
@@ -686,7 +699,8 @@ BEGIN
         book_publication_year = p_book_publication_year,
         book_quantity_available = p_book_quantity_available,
         book_status = p_book_status,
-        book_cover_image = p_book_cover_image
+        book_cover_image = p_book_cover_image,
+        book_price = p_book_price
     WHERE id_book = p_id_book;
 END;
 $$;
