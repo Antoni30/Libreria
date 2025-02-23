@@ -3,10 +3,11 @@ import { IconFactory } from '../../shared/components/IconFactory'
 import { Icon } from '../../shared/enums/icon.enum'
 import { usePublishers } from '../hooks/usePublishers'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
+import { useDeletePublisher } from '../hooks/useDeletePublisher'
 
 export function Publishers() {
-  const { publishers, isLoading, publisherIdDeleting, deletePublisher } =
-    usePublishers()
+  const { publishers, isLoading } = usePublishers()
+  const { idDeleting, deletePublisher } = useDeletePublisher()
 
   return (
     <main>
@@ -52,8 +53,7 @@ export function Publishers() {
                   <td className="py-2 px-4 border-b">{publisher.phone}</td>
                   <td className="py-2 px-4 border-b">{publisher.email}</td>
                   <td className="py-2 px-4 border-b flex space-x-4 justify-center">
-                    {publisherIdDeleting &&
-                    publisherIdDeleting === publisher.id ? (
+                    {idDeleting && idDeleting === publisher.id ? (
                       <IconFactory icon={Icon.LOADING} />
                     ) : (
                       <>

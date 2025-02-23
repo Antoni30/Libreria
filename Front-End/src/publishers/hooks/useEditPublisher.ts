@@ -10,7 +10,7 @@ import {
   validateEmail,
   validatePhoneNumber,
 } from '../../shared/utils/validations.util'
-import { editPublisherService } from '../services/publisher.service'
+import { putPublisher } from '../services/publisher.service'
 import { usePublisher } from './usePublisher'
 import { useNavigate } from 'react-router'
 import { ROUTES_PATH } from '../../shared/constants/routesPermissions'
@@ -133,7 +133,7 @@ export function useEditPublisher({ publisherId }: { publisherId?: number }) {
       phone: form.fields.phone.value,
     }
 
-    editPublisherService(publisherToUpdate.id, updatedPublisher)
+    putPublisher(publisherToUpdate.id, updatedPublisher)
       .then((successful) => {
         if (successful) {
           setMessage('Publisher updated successfully')

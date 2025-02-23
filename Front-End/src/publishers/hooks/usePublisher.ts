@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Publisher } from '../types/publisher'
-import { getPublisherByIdService } from '../services/publisher.service'
+import { getPublisherById } from '../services/publisher.service'
 
 export function usePublisher({ id }: { id?: number }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -12,7 +12,7 @@ export function usePublisher({ id }: { id?: number }) {
 
     setIsLoading(true)
 
-    getPublisherByIdService(id)
+    getPublisherById(id)
       .then((publisher) => setPublisher(publisher))
       .catch(() => {
         setError('Publisher not found')

@@ -1,41 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Publisher } from '../types/publisher'
-import {
-  deletePublisherService,
-  getPublishersService,
-} from '../services/publisher.service'
+import { getPublishers } from '../services/publisher.service'
 
 export function usePublishers() {
   const [publishers, setPublishers] = useState<Publisher[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [publisherIdDeleting, setPublisherIdDeleting] = useState<number | null>(
-    null
-  )
-
-  const deletePublisher = async (id: number) => {
-    setPublisherIdDeleting(id)
-    const isPublisherDeleted = await deletePublisherService(id)
-
-    if (!isPublisherDeleted) {
-      setError('An error occurred while trying to delete the publisher')
-    } else {
-      setPublishers((publishers) => {
-        return publishers.filter((publisher) => publisher.id !== id)
-      })
-    }
-
-    setPublisherIdDeleting(null)
-  }
 
   useEffect(() => {
     setIsLoading(true)
 
-    void getPublishersService().then((publishers) => {
-      setPublishers(publishers)
-      setIsLoading(false)
-    })
+    void getPublishers()
+      .then((publishers) => {
+        setPublishers(publishers)
+        setIsLoading(false)
+      })
+      .catch(() => setError('An error occur trying to retrieve the publishers'))
   }, [])
 
-  return { publishers, isLoading, error, publisherIdDeleting, deletePublisher }
+  return { publishers, isLoading, error }
 }

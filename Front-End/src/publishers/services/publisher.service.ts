@@ -10,7 +10,7 @@ import { mapPublisherDTO } from '../utils/publisher.api.util'
 
 const PUBLISHER_API_PATH = 'http://localhost:2030/publishers'
 
-export async function getPublishersService(): Promise<Publisher[]> {
+export async function getPublishers(): Promise<Publisher[]> {
   try {
     const response = await fetch(PUBLISHER_API_PATH)
 
@@ -32,7 +32,7 @@ export async function getPublishersService(): Promise<Publisher[]> {
   }
 }
 
-export async function getPublisherByIdService(
+export async function getPublisherById(
   id: number
 ): Promise<Publisher | undefined> {
   try {
@@ -52,7 +52,7 @@ export async function getPublisherByIdService(
   }
 }
 
-export async function deletePublisherService(id: number): Promise<boolean> {
+export async function deletePublisher(id: number): Promise<boolean> {
   try {
     const response = await fetch(`${PUBLISHER_API_PATH}/${id}`, {
       method: 'DELETE',
@@ -73,7 +73,7 @@ export async function deletePublisherService(id: number): Promise<boolean> {
   }
 }
 
-export async function addPublisherService(
+export async function postPublisher(
   publisher: AddPublisher
 ): Promise<Publisher | undefined> {
   try {
@@ -101,7 +101,7 @@ export async function addPublisherService(
   }
 }
 
-export async function editPublisherService(
+export async function putPublisher(
   id: number,
   publisher: EditPublisher
 ): Promise<Publisher | undefined> {

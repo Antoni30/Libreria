@@ -9,7 +9,7 @@ import {
   validateEmail,
   validatePhoneNumber,
 } from '../../shared/utils/validations.util'
-import { addPublisherService } from '../services/publisher.service'
+import { postPublisher } from '../services/publisher.service'
 
 function initializeForm(): AddPublisherForm {
   return {
@@ -127,7 +127,7 @@ export function useAddPublisher() {
       phone: form.fields.phone.value,
     }
 
-    addPublisherService(newPublisher)
+    postPublisher(newPublisher)
       .then((successful) => {
         if (successful) {
           setMessage('Publisher created successfully')
