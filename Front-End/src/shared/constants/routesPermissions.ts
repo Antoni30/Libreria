@@ -20,6 +20,16 @@ export const ROUTES_PATH = {
   users: {
     relative: 'users',
     absolute: '/users',
+    add: {
+      relative: 'add',
+      absolute: '/users/add',
+    },
+    edit: {
+      relative: 'edit/:userId',
+      absolute: (userId: number) => {
+        return `/users/edit/${userId}`
+      },
+    },
   },
   sales: {
     relative: 'sales',
@@ -28,6 +38,16 @@ export const ROUTES_PATH = {
   books: {
     relative: 'books',
     absolute: '/books',
+    add: {
+      relative: 'add',
+      absolute: '/books/add',
+    },
+    edit: {
+      relative: 'edit/:bookId',
+      absolute: (bookId: number) => {
+        return `/books/edit/${bookId}`
+      },
+    },
   },
   publishers: {
     relative: 'publishers',
