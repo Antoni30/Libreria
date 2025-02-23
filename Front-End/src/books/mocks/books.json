@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "publisherId": 3,
+    "title": "Four-Faced Liar, The",
+    "author": "Ulrike Aliman",
+    "isbn": "691160747-7",
+    "publicationYear": 2006,
+    "quantity": 35,
+    "status": "Unavailable",
+    "price": 2.99
+  },
+  {
+    "id": 2,
+    "publisherId": 4,
+    "title": "Deeper Shade of Blue, A",
+    "author": "Eddy Jacqueminot",
+    "isbn": "930749053-8",
+    "publicationYear": 2000,
+    "quantity": 64,
+    "status": "Unavailable",
+    "price": 2.99
+  },
+  {
+    "id": 3,
+    "publisherId": 3,
+    "title": "Cinema Paradiso (Nuovo cinema Paradiso)",
+    "author": "Julienne Collop",
+    "isbn": "752585519-6",
+    "publicationYear": 1991,
+    "quantity": 69,
+    "status": "Unavailable",
+    "price": 2.99
+  },
+  {
+    "id": 4,
+    "publisherId": 4,
+    "title": "Abduction",
+    "author": "Star Rosenbaum",
+    "isbn": "867004336-X",
+    "publicationYear": 1997,
+    "quantity": 46,
+    "status": "Available",
+    "price": 2.99
+  },
+  {
+    "id": 5,
+    "publisherId": 5,
+    "title": "I Am Curious (Blue) (Jag är nyfiken - en film i blått)",
+    "author": "Alair Cornthwaite",
+    "isbn": "743574505-7",
+    "publicationYear": 2008,
+    "quantity": 45,
+    "status": "Available",
+    "price": 2.99
+  },
+  {
+    "id": 6,
+    "publisherId": 6,
+    "title": "Performance",
+    "author": "Shoshanna McCaskell",
+    "isbn": "867332561-7",
+    "publicationYear": 2004,
+    "quantity": 41,
+    "status": "Unavailable",
+    "price": 2.99
+  },
+  {
+    "id": 7,
+    "publisherId": 7,
+    "title": "From the Earth to the Moon",
+    "author": "Joycelin Bramford",
+    "isbn": "316674127-5",
+    "publicationYear": 2003,
+    "quantity": 69,
+    "status": "Unavailable",
+    "price": 2.99
+  },
+  {
+    "id": 8,
+    "publisherId": 8,
+    "title": "Destiny (Al-massir)",
+    "author": "Yulma Izzat",
+    "isbn": "126869314-6",
+    "publicationYear": 2010,
+    "quantity": 96,
+    "status": "Available",
+    "price": 2.99
+  },
+  {
+    "id": 9,
+    "publisherId": 9,
+    "title": "Sun Don't Shine",
+    "author": "Sara-ann Barabisch",
+    "isbn": "247670323-0",
+    "publicationYear": 2003,
+    "quantity": 21,
+    "status": "Available",
+    "price": 2.99
+  },
+  {
+    "id": 10,
+    "publisherId": 10,
+    "title": "Starlift",
+    "author": "Natal Witten",
+    "isbn": "820762762-X",
+    "publicationYear": 2007,
+    "quantity": 13,
+    "status": "Available",
+    "price": 2.99
+  }
+]

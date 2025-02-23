@@ -18,8 +18,10 @@ import { Sales } from './sales/screens/Sales'
 import { Users } from './users/screens/Users'
 import { AddPublisher } from './publishers/screens/AddPublisher'
 import { EditPublisher } from './publishers/screens/EditPublisher'
-import {EditUser} from './users/screens/EditUser'
+import { EditUser } from './users/screens/EditUser'
 import { DeleteUser } from './users/screens/DeleteUser'
+import { AddBook } from './books/screens/AddBook'
+import { EditBook } from './books/screens/EditBook'
 
 function App() {
   return (
@@ -64,6 +66,11 @@ function App() {
           }
         >
           <Route index element={<Books />} />
+          <Route path={ROUTES_PATH.books.add.relative} element={<AddBook />} />
+          <Route
+            path={ROUTES_PATH.books.edit.relative}
+            element={<EditBook />}
+          />
         </Route>
 
         <Route
@@ -105,7 +112,7 @@ function App() {
             path={ROUTES_PATH.users.edit.relative}
             element={<EditUser />}
           />
-           <Route
+          <Route
             path={ROUTES_PATH.users.delete.relative}
             element={<DeleteUser />}
           />
