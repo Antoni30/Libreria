@@ -20,7 +20,11 @@ export function isValidAuthor(author: string): boolean {
 }
 
 export function isValidIsbn(isbn: string): boolean {
-  return isbn.length > 0
+  return isbn.length === 13
+}
+
+export function isValidPublisherId(id: number): boolean {
+  return id >= 0
 }
 
 export function isValidPublicationYear(publicationYear: number): boolean {
@@ -32,11 +36,11 @@ export function isValidQuantity(quantity: number): boolean {
 }
 
 export function isValidTitle(title: string): boolean {
-  return title.length > 0
+  return title.length > 0 && title.length <= 50
 }
 
 export function isValidPrice(price: number): boolean {
-  return price > 0
+  return price > 0 && price <= 100
 }
 
 export function validateAuthor(author: string): FormField<string> {
@@ -52,6 +56,14 @@ export function validateIsbn(isbn: string): FormField<string> {
   return {
     error: !isValid ? 'ISBN invalid' : '',
     value: isbn,
+  }
+}
+
+export function validatePublisherId(id: number): FormField<number> {
+  const isValid = isValidPublisherId(id)
+  return {
+    error: !isValid ? 'Publisher invalid' : '',
+    value: id,
   }
 }
 
@@ -96,10 +108,9 @@ export function validateAddBookForm(form: AddBookForm) {
   formValidated.fields.publicationYear = validatePublicationYear(
     formValidated.fields.publicationYear.value
   )
-  formValidated.fields.publisherId.error =
-    formValidated.fields.publisherId.value === -1
-      ? 'Publisher not selected yet'
-      : ''
+  formValidated.fields.publisherId = validatePublisherId(
+    formValidated.fields.publisherId.value
+  )
   formValidated.fields.quantity = validateQuantity(
     formValidated.fields.quantity.value
   )

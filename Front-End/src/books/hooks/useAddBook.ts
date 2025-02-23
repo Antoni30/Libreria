@@ -6,7 +6,9 @@ import {
   validateIsbn,
   validatePrice,
   validatePublicationYear,
+  validatePublisherId,
   validateQuantity,
+  validateTitle,
 } from '../utils/book.util'
 import { postBook } from '../services/book.service'
 import { BookStatus } from '../enums/book.enum'
@@ -74,7 +76,9 @@ function addBookReducer(
 
     case 'set-publisher-id': {
       const newState = structuredClone(state)
-      newState.fields.publisherId.value = action.payload.publisherId
+      newState.fields.publisherId = validatePublisherId(
+        action.payload.publisherId
+      )
       return newState
     }
 
@@ -86,7 +90,7 @@ function addBookReducer(
 
     case 'set-title': {
       const newState = structuredClone(state)
-      newState.fields.title.value = action.payload.title
+      newState.fields.title = validateTitle(action.payload.title)
       return newState
     }
 
@@ -192,7 +196,7 @@ export function useAddBook() {
         if (successful) {
           setMessage('Book created successfully')
         } else {
-          setError('Book name already exist')
+          setError('Book already exist')
         }
       })
       .catch(() => {

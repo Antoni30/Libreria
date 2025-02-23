@@ -29,6 +29,7 @@ export function Books() {
               <th className="py-2 px-4 border-b">ISBN</th>
               <th className="py-2 px-4 border-b">Publication Year</th>
               <th className="py-2 px-4 border-b">Quantity</th>
+              <th className="py-2 px-4 border-b">Price</th>
               <th className="py-2 px-4 border-b">Status</th>
               <th className="py-2 px-4 border-b">Actions</th>
             </tr>
@@ -36,13 +37,13 @@ export function Books() {
           <tbody>
             {!books ? (
               <tr>
-                <td colSpan={7} className="py-4 text-center text-gray-500">
+                <td colSpan={8} className="py-4 text-center text-gray-500">
                   <IconFactory icon={Icon.LOADING} />
                 </td>
               </tr>
             ) : !books.length ? (
               <tr>
-                <td colSpan={7} className="py-4 text-center text-gray-500">
+                <td colSpan={8} className="py-4 text-center text-gray-500">
                   No books found.
                 </td>
               </tr>
@@ -54,6 +55,7 @@ export function Books() {
                   <td className="py-2 px-4 border-b">{book.isbn}</td>
                   <td className="py-2 px-4 border-b">{book.publicationYear}</td>
                   <td className="py-2 px-4 border-b">{book.quantity}</td>
+                  <td className="py-2 px-4 border-b">{book.price}</td>
                   <td className="py-2 px-4 border-b">
                     {bookStatusToString(book.status)}
                   </td>

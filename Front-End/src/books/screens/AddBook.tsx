@@ -114,7 +114,7 @@ export function AddBook() {
         <div className="mb-4">
           <label className="block text-gray-700">Publication year</label>
           <input
-            type="number"
+            type="text"
             value={form.fields.publicationYear.value}
             onChange={(e) => setPublicationYear(+e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1"
@@ -144,7 +144,8 @@ export function AddBook() {
         <div className="mb-4">
           <label className="block text-gray-700">Price</label>
           <input
-            type="email"
+            type="number"
+            step={0.01}
             value={form.fields.price.value}
             onChange={(e) => setPrice(+e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-1"

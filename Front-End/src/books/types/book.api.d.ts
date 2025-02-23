@@ -8,11 +8,25 @@ export interface BookDTO {
   book_quantity_available: number
   book_status: string
   book_cover_image: string
-  book_price: number
+  book_price: string
 }
 
-export type GetBooksDTO = BookDTO[]
+export type GetBooksResponse = BookDTO[] | { message: string; error: string }
 
-export type GetBookDTO = BookDTO
+export type GetBookResponse = BookDTO | { message: string; error: string }
 
-export type PutBookDTO = Omit<BookDTO, 'id_book'>
+export type PostBookRequest = Omit<BookDTO, 'id_book'>
+
+export type PostBookResponse =
+  | { message: string; error: undefined }
+  | { message: undefined; error: string }
+
+export type PutBookRequest = Omit<BookDTO, 'id_book'>
+
+export type PutBookResponse =
+  | { message: string; error: undefined }
+  | { message: undefined; error: string }
+
+export type DeleteBookResponse =
+  | { message: string; error: undefined }
+  | { message: undefined; error: string }

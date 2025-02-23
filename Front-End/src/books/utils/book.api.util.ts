@@ -1,7 +1,7 @@
 import { bookStatusMap } from '../constants/book.const'
 import { BookStatus } from '../enums/book.enum'
-import { Book, EditBook } from '../types/book'
-import { BookDTO, PutBookDTO } from '../types/book.api'
+import { AddBook, Book, EditBook } from '../types/book'
+import { BookDTO, PostBookRequest, PutBookRequest } from '../types/book.api'
 import { bookStatusToString, isBookStatus } from './book.util'
 
 export function mapBookStatus(statusObject: unknown): BookStatus {
@@ -25,11 +25,11 @@ export function mapBookDTO(bookObject: BookDTO): Book {
     quantity: bookObject.book_quantity_available,
     status: mapBookStatus(bookObject.book_status),
     title: bookObject.book_title,
-    price: bookObject.book_price,
+    price: Number(bookObject.book_price),
   }
 }
 
-export function mapEditBook(book: EditBook): PutBookDTO {
+export function mapAddBook(book: AddBook): PostBookRequest {
   return {
     book_author: book.author,
     book_cover_image: '',
@@ -39,6 +39,24 @@ export function mapEditBook(book: EditBook): PutBookDTO {
     book_status: bookStatusToString(book.status),
     book_title: book.title,
     id_publisher: book.publisherId,
-    book_price: book.price,
+    book_price: book.price.toString(),
   }
+}
+
+export function mapEditBook(book: EditBook): PutBookRequest {
+  return {
+    book_author: book.author,
+    book_cover_image: '',
+    book_isbn: book.isbn,
+    book_publication_year: book.publicationYear,
+    book_quantity_available: book.quantity,
+    book_status: bookStatusToString(book.status),
+    book_title: book.title,
+    id_publisher: book.publisherId,
+    book_price: book.price.toString(),
+  }
+}
+
+export function isBookDTO(object: unknown): object is BookDTO {
+  return (object as BookDTO).book_isbn !== undefined
 }

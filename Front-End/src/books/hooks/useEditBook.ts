@@ -207,7 +207,7 @@ export function useEditBook({ bookId }: { bookId?: number }) {
         if (successful) {
           setMessage('Book updated successfully')
         } else {
-          setError('Book name already exist')
+          setError('Book already exist')
         }
       })
       .catch(() => {

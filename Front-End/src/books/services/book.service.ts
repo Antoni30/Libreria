@@ -1,21 +1,31 @@
 import { AddBook, Book, DeleteBook, EditBook } from '../types/book'
-import BooksMock from '../mocks/books.json'
-import { mapBookStatus } from '../utils/book.api.util'
+import {
+  isBookDTO,
+  mapAddBook,
+  mapBookDTO,
+  mapEditBook,
+} from '../utils/book.api.util'
+import {
+  DeleteBookResponse,
+  GetBookResponse,
+  GetBooksResponse,
+  PostBookResponse,
+  PutBookResponse,
+} from '../types/book.api'
 
-// const BOOKS_API_PATH = 'http://localhost:2024/books'
+const BOOK_API_PATH = 'http://localhost:2024/books'
 
 export async function getBooks(): Promise<Book[]> {
   try {
-    return await new Promise((resolve) => {
-      const books = BooksMock.map((book) => ({
-        ...book,
-        status: mapBookStatus(book.status),
-      }))
+    const response = await fetch(BOOK_API_PATH)
 
-      setTimeout(() => {
-        resolve(books)
-      }, 2000)
-    })
+    if (!response.ok) throw new Error('Cannot retrieve publishers')
+
+    const jsonResponse = (await response.json()) as GetBooksResponse
+
+    if (!Array.isArray(jsonResponse)) throw new Error(jsonResponse.error)
+
+    return jsonResponse.map((bookDTO) => mapBookDTO(bookDTO))
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
@@ -27,20 +37,13 @@ export async function getBooks(): Promise<Book[]> {
 
 export async function getBookById(id: number): Promise<Book | undefined> {
   try {
-    return await new Promise((resolve) => {
-      const book = BooksMock.find((book) => book.id === id)
+    const response = await fetch(`${BOOK_API_PATH}/${id}`)
+    if (!response.ok) throw new Error('Cannot retrieve publisher')
 
-      setTimeout(() => {
-        resolve(
-          book
-            ? {
-                ...book,
-                status: mapBookStatus(book.status),
-              }
-            : undefined
-        )
-      }, 2000)
-    })
+    const jsonResponse = (await response.json()) as GetBookResponse
+    if (!isBookDTO(jsonResponse)) throw new Error(jsonResponse.error)
+
+    return mapBookDTO(jsonResponse)
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
@@ -51,58 +54,77 @@ export async function getBookById(id: number): Promise<Book | undefined> {
 export async function putBook(
   id: number,
   bookToUpdate: EditBook
-): Promise<Book | undefined> {
+): Promise<boolean> {
   try {
-    return await new Promise((resolve) => {
-      const book = BooksMock.find((book) => book.id === id)
-      setTimeout(() => {
-        resolve(book ? { id: id, ...bookToUpdate } : undefined)
-      }, 2000)
+    const response = await fetch(`${BOOK_API_PATH}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mapEditBook(bookToUpdate)),
     })
+
+    if (!response.ok) throw new Error('Cannot update publisher')
+
+    const jsonResponse = (await response.json()) as PutBookResponse
+
+    if (jsonResponse.error !== undefined) throw new Error(jsonResponse.error)
+
+    return true
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
     }
+
+    return false
   }
 }
 
-export async function deleteBook(
-  bookToDelete: DeleteBook
-): Promise<Book | undefined> {
+export async function deleteBook(bookToDelete: DeleteBook): Promise<boolean> {
   try {
-    return await new Promise((resolve) => {
-      const deletedBook = BooksMock.find((book) => book.id === bookToDelete.id)
-      setTimeout(() => {
-        resolve(
-          deletedBook
-            ? {
-                ...deletedBook,
-                status: mapBookStatus(deletedBook.status),
-              }
-            : undefined
-        )
-      }, 2000)
+    const response = await fetch(`${BOOK_API_PATH}/${bookToDelete.id}`, {
+      method: 'DELETE',
     })
+
+    if (!response.ok) throw new Error('Cannot update publisher')
+
+    const jsonResponse = (await response.json()) as DeleteBookResponse
+
+    if (jsonResponse.error !== undefined) throw new Error(jsonResponse.error)
+
+    return true
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
     }
+
+    return false
   }
 }
 
-export async function postBook(newBook: AddBook): Promise<Book | undefined> {
+export async function postBook(newBook: AddBook): Promise<boolean> {
   try {
-    return await new Promise((resolve) => {
-      const isBookOnDb = BooksMock.find((book) => book.isbn === newBook.isbn)
-      setTimeout(() => {
-        if (isBookOnDb) return resolve(undefined)
-
-        resolve({ id: BooksMock.length + 1, ...newBook })
-      }, 2000)
+    console.log(JSON.stringify(mapAddBook(newBook)))
+    const response = await fetch(BOOK_API_PATH, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mapAddBook(newBook)),
     })
+
+    if (!response.ok) throw new Error('Cannot update publisher')
+
+    const jsonResponse = (await response.json()) as PostBookResponse
+
+    if (jsonResponse.error !== undefined) throw new Error(jsonResponse.error)
+
+    return true
   } catch (error) {
     if (error instanceof Error) {
       console.error(`Error: ${error.message}`)
     }
+
+    return false
   }
 }
