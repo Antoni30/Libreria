@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import type { User } from "../types/types";
+import { IconFactory } from "../../shared/components/IconFactory";
+import { Icon } from "../../shared/enums/icon.enum";
+import { Link } from "react-router";
+import { ROUTES_PATH } from "../../shared/constants/routesPermissions";
 
 export function Users() {
   const [users, setUsers] = useState<User[]>([]);
@@ -7,7 +11,6 @@ export function Users() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState<"email" | "fullname">("email");
   const [roleFilter, setRoleFilter] = useState<string>("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
@@ -15,6 +18,7 @@ export function Users() {
     try {
       const response = await fetch("http://localhost:2028/users");
       if (!response.ok) throw new Error("Failed to fetch users");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data: User[] = await response.json();
       setUsers(Array.isArray(data) ? data : []);
       setFilteredUsers(Array.isArray(data) ? data : []);
@@ -25,7 +29,7 @@ export function Users() {
   }, []);
 
   useEffect(() => {
-    fetchUsers();
+    void fetchUsers();
   }, [fetchUsers]);
 
   useEffect(() => {
@@ -102,9 +106,23 @@ export function Users() {
                   <td className="border px-4 py-2">{user.id_user_role === 1 ? "Admin" : user.id_user_role === 2 ? "Bibliotecario" : "Cliente"}</td>
                   <td className="border px-4 py-2">
                     <div className="flex gap-2">
-                      <button className="text-blue-500 hover:underline">update</button>
-                      <button className="text-red-500 hover:underline">delete</button>
-                      <button className="text-gray-500 hover:underline">details</button>
+                    <Link
+                          to={ROUTES_PATH.users.edit.absolute(
+                            parseInt(user.id_user)
+                          )}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          <IconFactory icon={Icon.EDIT} />
+                    </Link>
+
+                    <Link
+                          to={ROUTES_PATH.users.delete.absolute(
+                            parseInt(user.id_user)
+                          )}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <IconFactory icon={Icon.DELETE} />
+                    </Link>
                     </div>
                   </td>
                 </tr>

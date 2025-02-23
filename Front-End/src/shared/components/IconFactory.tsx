@@ -8,6 +8,7 @@ import {
 import { Icon } from '../enums/icon.enum'
 import { GrStatusUnknown } from 'react-icons/gr'
 import { CgSpinner } from 'react-icons/cg'
+import { IoEyeSharp } from "react-icons/io5";
 
 interface IconFactoryProps {
   icon: Icon
@@ -36,6 +37,10 @@ export function IconFactory({ icon }: IconFactoryProps) {
       return (
         <CgSpinner className="animate-spin inline-block" size={ICON_SIZE} />
       )
+      case Icon.DETAILS:
+        return (
+          <IoEyeSharp  size={ICON_SIZE}/>
+        )
 
     default:
       return <GrStatusUnknown size={ICON_SIZE} />

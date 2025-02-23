@@ -29,7 +29,12 @@ export const ROUTES_PATH = {
       absolute: (userId: number) => {
         return `/users/edit/${userId}`
       },
-    },
+    },delete: {
+      relative: 'delete/:userId',
+      absolute: (userId: number) => {
+        return `/users/delete/${userId}`
+      },
+    }
   },
   sales: {
     relative: 'sales',

@@ -18,6 +18,8 @@ import { Sales } from './sales/screens/Sales'
 import { Users } from './users/screens/Users'
 import { AddPublisher } from './publishers/screens/AddPublisher'
 import { EditPublisher } from './publishers/screens/EditPublisher'
+import {EditUser} from './users/screens/EditUser'
+import { DeleteUser } from './users/screens/DeleteUser'
 
 function App() {
   return (
@@ -99,6 +101,14 @@ function App() {
           }
         >
           <Route index element={<Users />} />
+          <Route
+            path={ROUTES_PATH.users.edit.relative}
+            element={<EditUser />}
+          />
+           <Route
+            path={ROUTES_PATH.users.delete.relative}
+            element={<DeleteUser />}
+          />
         </Route>
 
         <Route path="*" element={<NotFound />} />
