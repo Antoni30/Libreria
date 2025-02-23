@@ -1,3 +1,83 @@
+CREATE OR REPLACE FUNCTION insert_book_sale(
+    p_id_user INT,
+    p_id_book INT,
+    p_book_sale_quantity_sold INT,
+    p_book_sale_unit_price NUMERIC(10,2)
+) RETURNS VOID AS $$
+DECLARE
+    v_user_exists INT;
+    v_book_exists INT;
+    v_book_sale_id INT;
+BEGIN
+    -- Validar si el usuario existe
+    SELECT COUNT(*) INTO v_user_exists FROM "USER" WHERE id_user = p_id_user;
+    IF v_user_exists = 0 THEN
+        RAISE EXCEPTION 'El usuario con id % no existe', p_id_user;
+    END IF;
+
+    -- Validar si el libro existe
+    SELECT COUNT(*) INTO v_book_exists FROM book WHERE id_book = p_id_book;
+    IF v_book_exists = 0 THEN
+        RAISE EXCEPTION 'El libro con id % no existe', p_id_book;
+    END IF;
+
+    -- Insertar en book_sale
+    INSERT INTO book_sale (id_user, book_sale_date, book_sale_quantity_sold, book_sale_unit_price)
+    VALUES (p_id_user, NOW(), p_book_sale_quantity_sold, p_book_sale_unit_price)
+    RETURNING id_book_sale INTO v_book_sale_id;
+
+    -- Insertar en sales_and_books
+    INSERT INTO sales_and_books (id_book, id_book_sale)
+    VALUES (p_id_book, v_book_sale_id);
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+DROP FUNCTION search_user_closest(character varying,character varying) 
+
+SELECT * FROM search_user_closest('artoapanta3@espe.edu.ec', NULL);
+
+
+CREATE OR REPLACE FUNCTION search_user_closest(
+    p_email VARCHAR DEFAULT NULL, 
+    p_fullname VARCHAR DEFAULT NULL
+)
+RETURNS TABLE (
+    id_user INT,
+    id_user_role INT,
+    user_fullname VARCHAR,
+    user_email VARCHAR,
+    user_phone VARCHAR,
+    user_registration_date DATE,
+    id_firebase VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT 
+        u.id_user, 
+        u.id_user_role,
+        u.user_fullname, 
+        u.user_email, 
+        u.user_phone, 
+        u.user_registration_date, 
+        u.id_firebase
+    FROM public."USER" u
+    WHERE 
+        (p_email IS NOT NULL AND p_email <> 'null' AND u.user_email ILIKE '%' || p_email || '%')
+        OR (p_fullname IS NOT NULL AND p_fullname <> 'null' AND u.user_fullname ILIKE '%' || p_fullname || '%')
+    ORDER BY LENGTH(u.user_email) ASC, LENGTH(u.user_fullname) ASC
+    LIMIT 1;
+END;
+$$;
+
+
+
+
+
 CREATE OR REPLACE FUNCTION get_books_purchased_by_user(p_id_user INT)
 RETURNS TABLE (
     id_book INT,
@@ -33,6 +113,10 @@ $$;
  * Books_sales
  */
 
+SELECT * FROM get_sales_by_book(1)
+
+
+
 CREATE OR REPLACE PROCEDURE insert_sales_and_books(
     p_id_book INT,
     p_id_book_sale INT
@@ -45,18 +129,27 @@ BEGIN
 END;
 $$;
 
+DROP FUNCTION get_sales_and_books()
+
 CREATE OR REPLACE FUNCTION get_sales_and_books()
 RETURNS TABLE (
     id_book INT,
     book_title VARCHAR(200),
     id_book_sale INT,
-    book_sale_quantity_sold INT
+    book_sale_quantity_sold INT,
+    book_total_sale NUMERIC(10,2),
+    book_sale_date DATE
 ) 
 LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY 
-    SELECT sb.id_book, b.book_title, sb.id_book_sale, bs.book_sale_quantity_sold
+    SELECT  sb.id_book, 
+        b.book_title, 
+        sb.id_book_sale, 
+        bs.book_sale_quantity_sold, 
+        bs.book_total_sale, 
+        bs.book_sale_date
     FROM sales_and_books sb
     JOIN book b ON sb.id_book = b.id_book
     JOIN book_sale bs ON sb.id_book_sale = bs.id_book_sale;
@@ -99,12 +192,14 @@ BEGIN
 END;
 $$;
 
+DROP FUNCTION get_sales_by_book(integer)
+
 CREATE OR REPLACE FUNCTION get_sales_by_book(p_id_book INT)
 RETURNS TABLE (
     id_book_sale INT,
-    book_sale_date TIMESTAMP,
+    book_sale_date DATE,
     book_sale_quantity_sold INT,
-    book_sale_unit_price NUMERIC(10,2),
+    book_sale_unit_price money,
     book_total_sale NUMERIC(10,2)
 ) 
 LANGUAGE plpgsql
@@ -150,33 +245,49 @@ ALTER TABLE book_sale
 ADD COLUMN book_total_sale NUMERIC(10,2) 
 GENERATED ALWAYS AS (book_sale_quantity_sold * book_sale_unit_price) STORED;
 
+
+
 CREATE OR REPLACE FUNCTION get_all_book_sales()
 RETURNS TABLE (
     id_book_sale INT,
     id_user INT,
-    book_sale_date TIMESTAMP,
+    book_sale_date DATE,
     book_sale_quantity_sold INT,
     book_sale_unit_price NUMERIC(10,2),
     book_total_sale NUMERIC(10,2)
 ) AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM book_sale;
+    RETURN QUERY 
+    SELECT bs.id_book_sale, bs.id_user, bs.book_sale_date, 
+           bs.book_sale_quantity_sold, 
+           bs.book_sale_unit_price::NUMERIC(10,2),  -- Convierte MONEY a NUMERIC si es necesario
+           bs.book_total_sale::NUMERIC(10,2)  -- Convierte MONEY a NUMERIC si es necesario
+    FROM book_sale bs;  -- Usa alias para evitar ambigüedad
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION get_book_sale_by_id(p_id_book_sale INT)
 RETURNS TABLE (
     id_book_sale INT,
     id_user INT,
-    book_sale_date TIMESTAMP,
+    book_sale_date DATE,
     book_sale_quantity_sold INT,
     book_sale_unit_price NUMERIC(10,2),
     book_total_sale NUMERIC(10,2)
 ) AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM book_sale WHERE id_book_sale = p_id_book_sale;
+    RETURN QUERY 
+    SELECT bs.id_book_sale, bs.id_user, bs.book_sale_date, 
+           bs.book_sale_quantity_sold, 
+           bs.book_sale_unit_price::NUMERIC(10,2),  
+           bs.book_total_sale::NUMERIC(10,2)  
+    FROM book_sale bs
+    WHERE bs.id_book_sale = p_id_book_sale;
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE PROCEDURE insert_book_sale(
     p_id_user INT,
@@ -186,7 +297,7 @@ CREATE OR REPLACE PROCEDURE insert_book_sale(
 AS $$
 BEGIN
     -- Validaciones
-    IF NOT EXISTS (SELECT 1 FROM users WHERE id_user = p_id_user) THEN
+    IF NOT EXISTS (SELECT 1 FROM "USER" WHERE id_user = p_id_user) THEN
         RAISE EXCEPTION 'El usuario con ID % no existe', p_id_user;
     END IF;
 
@@ -199,8 +310,8 @@ BEGIN
     END IF;
 
     -- Insertar la venta
-    INSERT INTO book_sale (id_user, book_sale_quantity_sold, book_sale_unit_price)
-    VALUES (p_id_user, p_book_sale_quantity_sold, p_book_sale_unit_price);
+    INSERT INTO book_sale (id_user,book_sale_date, book_sale_quantity_sold, book_sale_unit_price)
+    VALUES (p_id_user, NOW(),p_book_sale_quantity_sold, p_book_sale_unit_price);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -924,9 +1035,6 @@ BEGIN
 END;
 $$;
 
-call insert_data('administrador');
-call insert_data('bibliotecario');
-call insert_data('usuario');
 
 
 
