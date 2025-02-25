@@ -71,6 +71,12 @@ export const ROUTES_PATH = {
   store: {
     relative: 'store',
     absolute: '/store',
+    view :{
+      relative: 'view/:id',
+      absolute:(bookId: number)=>{
+        return `/store/view/${bookId}`
+      }
+    }
   },
 }
 

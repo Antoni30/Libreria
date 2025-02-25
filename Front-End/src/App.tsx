@@ -23,6 +23,8 @@ import { DeleteUser } from './users/screens/DeleteUser'
 import { AddBook } from './books/screens/AddBook'
 import { EditBook } from './books/screens/EditBook'
 
+import {InfoBooks} from './store/screens/InfoBooks'
+
 function App() {
   return (
     <AuthProvider>
@@ -57,6 +59,8 @@ function App() {
           }
         >
           <Route index element={<Store />} />
+          <Route path={ROUTES_PATH.store.view.relative} element={<InfoBooks />} />
+
         </Route>
 
         <Route
