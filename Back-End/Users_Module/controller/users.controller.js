@@ -25,7 +25,6 @@ export const postUser = async (req,res)=>{
             })
         }
 
-        console.log(req.body)
         const date = new Date()
         const dateFormat=date.toISOString()
         const newUser = new User(id_user_role,user_fullname,user_email,user_password,user_phone,dateFormat)
