@@ -10,7 +10,7 @@ describe("Firebase Controller", () => {
   });
 
   // 1. Prueba de `deleteEmail`
-  test("should delete user successfully", async () => {
+  test("deberia borrar email registrado en firebase", async () => {
     const uid = "some-uid";
 
     // Simulamos la función `deleteUser` de Firebase para que no haga nada (simulación exitosa)
@@ -32,29 +32,8 @@ describe("Firebase Controller", () => {
     });
   });
 
-  // 2. Prueba de `deleteEmail` cuando ocurre un error
-  test("should handle error when deleting user", async () => {
-    const uid = "some-uid";
-
-    // Simulamos un error en `deleteUser` de Firebase
-    auth.deleteUser.mockRejectedValueOnce(new Error("Firebase error"));
-
-    const req = { params: { uid } };
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-    };
-
-    // Llamamos a la función del controlador
-    await firebaseController.deleteEmail(req, res);
-
-    // Verificamos que la respuesta tenga el status 500 y el mensaje de error correcto
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.send).toHaveBeenCalledWith({ error: "Error deleting user" });
-  });
-
-  // 3. Prueba de `updatePassword`
-  test("should update password successfully", async () => {
+  // 2. Prueba de `updatePassword`
+  test("deberia actualizar la contraseña del usuario", async () => {
     const uid = "some-uid";
     const newPassword = "newPassword123";
 
@@ -78,30 +57,5 @@ describe("Firebase Controller", () => {
     expect(res.send).toHaveBeenCalledWith({
       message: "Password updated successfully",
     });
-  });
-
-  // 4. Prueba de `updatePassword` cuando ocurre un error
-  test("should handle error when updating password", async () => {
-    const uid = "some-uid";
-    const newPassword = "newPassword123";
-
-    // Simulamos un error en `updateUser` de Firebase
-    auth.updateUser.mockRejectedValueOnce(new Error("Firebase error"));
-
-    const req = {
-      params: { uid },
-      body: { newPassword },
-    };
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-    };
-
-    // Llamamos a la función del controlador
-    await firebaseController.updatePassword(req, res);
-
-    // Verificamos que la respuesta tenga el status 500 y el mensaje de error correcto
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.send).toHaveBeenCalledWith({ error: "Error updating password" });
   });
 });

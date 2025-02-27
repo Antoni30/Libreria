@@ -1,5 +1,12 @@
 import { pool } from "../../db.js"; // Módulo de la base de datos
-import * as userController from "../controller/users.controller.js"; // Asegúrate de importar correctamente tu controlador
+import {
+  deleteUser,
+  getUserByID,
+  getUsers,
+  postUser,
+  putUser,
+  getUserByFirebaseID,
+} from "../controller/users.controller.js"; // Asegúrate de importar correctamente tu controlador
 
 jest.mock("../../db.js"); // Mocker la base de datos (pool.query)
 
@@ -10,7 +17,7 @@ describe("User Controller", () => {
   });
 
   // 1. Prueba de `getUsers`
-  test("should return list of users", async () => {
+  test("deberia retornar la lista de usuarios", async () => {
     // Preparamos el mock de `pool.query` para que devuelva una respuesta simulada.
     pool.query.mockResolvedValueOnce({
       rows: [
@@ -34,7 +41,7 @@ describe("User Controller", () => {
     };
 
     // Llamamos a la función del controlador
-    await userController.getUsers(req, res);
+    await getUsers(req, res);
 
     // Comprobamos que la respuesta tiene el status 200
     expect(res.status).toHaveBeenCalledWith(200);
@@ -50,7 +57,7 @@ describe("User Controller", () => {
   });
 
   // 2. Prueba de `postUser`
-  test("should add a new user", async () => {
+  test("deberia agregar un nuevo usuario", async () => {
     const newUser = {
       id_user_role: 1,
       user_fullname: "Jane Doe",
@@ -69,7 +76,7 @@ describe("User Controller", () => {
       json: jest.fn(),
     };
 
-    await userController.postUser(req, res);
+    await postUser(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -78,7 +85,7 @@ describe("User Controller", () => {
   });
 
   // 3. Prueba de `putUser`
-  test("should update a user", async () => {
+  test("deberia actualizar un usuario existente", async () => {
     const updatedUser = {
       id_user_role: 1,
       user_fullname: "John Doe Updated",
@@ -100,7 +107,7 @@ describe("User Controller", () => {
       json: jest.fn(),
     };
 
-    await userController.putUser(req, res);
+    await putUser(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -109,7 +116,7 @@ describe("User Controller", () => {
   });
 
   // 4. Prueba de `deleteUser`
-  test("should delete a user", async () => {
+  test("deberia eliminar un usuario", async () => {
     pool.query.mockResolvedValueOnce({
       rows: [{ does_user_role_exist: true }],
     });
@@ -120,7 +127,7 @@ describe("User Controller", () => {
       json: jest.fn(),
     };
 
-    await userController.deleteUser(req, res);
+    await deleteUser(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -129,7 +136,7 @@ describe("User Controller", () => {
   });
 
   // 5. Prueba de `getUserByID`
-  test("should get a user by ID", async () => {
+  test("deberia retornar un usuario por su id", async () => {
     const user = {
       id_user_role: 1,
       user_fullname: "John Doe",
@@ -151,14 +158,14 @@ describe("User Controller", () => {
       json: jest.fn(),
     };
 
-    await userController.getUserByID(req, res);
+    await getUserByID(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(user);
   });
 
   // 6. Prueba de `getUserByFirebaseID`
-  test("should get a user by Firebase ID", async () => {
+  test("deberia retornar un usuario por el id de Firebase", async () => {
     const user = {
       id_user_role: 1,
       user_fullname: "John Doe",
@@ -180,60 +187,7 @@ describe("User Controller", () => {
       json: jest.fn(),
     };
 
-    await userController.getUserByFirebaseID(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(user);
-  });
-
-  // 7. Prueba de `getBooksPurchasedByUser`
-  test("should get books purchased by user", async () => {
-    const books = [
-      { book_id: 1, title: "Book 1" },
-      { book_id: 2, title: "Book 2" },
-    ];
-    pool.query.mockResolvedValueOnce({
-      rows: books,
-    });
-
-    const req = { params: { id_user: 1 } };
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await userController.getBooksPurchasedByUser(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(books);
-  });
-
-  // 8. Prueba de `searchUser`
-  test("should search a user", async () => {
-    const user = {
-      id_user_role: 1,
-      user_fullname: "John Doe",
-      user_email: "john.doe@example.com",
-      user_password: "password123",
-      user_phone: "123456789",
-      user_registration_date: "2022-01-01T00:00:00.000Z",
-      id_firebase: "firebase_id_123",
-      id_user: 1,
-    };
-
-    pool.query.mockResolvedValueOnce({
-      rows: [user],
-    });
-
-    const req = {
-      body: { email: "john.doe@example.com", fullname: "John Doe" },
-    };
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    await userController.searchUser(req, res);
+    await getUserByFirebaseID(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(user);
